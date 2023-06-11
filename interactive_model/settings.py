@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -138,7 +140,7 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django_node_assets.finders.NodeModulesFinder',
 ]
-
+django_heroku.settings(locals())
 NODE_PACKAGE_JSON = os.path.join(BASE_DIR, 'package.json')
 NODE_MODULES_ROOT = os.path.join(BASE_DIR, 'node_modules')
 NODE_PACKAGE_MANAGER_EXECUTABLE = '/usr/local/bin/npm'
