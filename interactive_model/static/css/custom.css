@@ -1,0 +1,113 @@
+.hidden {
+    display: none;
+}  
+.collapsible {
+background-color: #f3f3f3;
+color: #444;
+cursor: pointer;
+padding: 18px;
+width: 100%;
+border: none;
+text-align: left;
+outline: none;
+font-size: 13px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+background-color: #fff;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+padding: 0 18px;
+display: none;
+overflow: hidden;
+background-color: #f1f1f1;
+}
+
+.collapsible:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: white;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+.timeline li .line-title {
+    font-size: 16px;
+    line-height: 16px!important;
+}
+
+.gif-block {
+    max-width: 700px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Centers the block horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.gif-block img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.small-image {
+    width: 200px; /* Adjust the width as needed */
+    height: auto; /* Automatically adjusts the height while maintaining aspect ratio */
+}
+
+.middle-image {
+    width: 600px; /* Adjust the width as needed */
+    height: auto; /* Automatically adjusts the height while maintaining aspect ratio */
+}
+.parent-container {
+    border: 1px solid #ccc; /* Add border styles */
+    border-radius: 5px; /* Add border radius */
+    overflow: hidden; /* Hide overflow */
+}
+.tab-container-lanu {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid #ccc; /* Add border styles */
+    border-radius: 5px; /* Add border radius */
+    overflow: hidden; /* Hide overflow */
+    background-color: #f2f2f2;
+    text-align: left; /* Adjust text alignment */
+    white-space: nowrap; /* Prevent text from breaking */
+}
+
+/* Tab Button */
+.tab-button {
+    background-color: #d3d1d1;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #a2a2a2;
+}
+
+.tab-button.active {
+    background-color: #777676;
+}
+
+/* Tab Content */
+.tab-content-lanu {
+    display: none;
+    padding: 20px;
+    font-size: 24px;
+}
+
+.tab-p{
+    font-size: 22 !important;
+}

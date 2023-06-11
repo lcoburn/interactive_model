@@ -1,0 +1,136 @@
+/* homepage video carousel */
+.tab-content {
+    font-family: 'Roboto', sans-serif;
+    color: black
+}
+
+
+.carousel .inner-content.vid-inner-content { 
+    height: 405px; width: 720px;
+    display: flex !important;
+    justify-content: center !important; /* for horizontal centering */
+    align-items: center !important;     /* for vertical centering */
+    text-align: center !important;
+    margin: auto !important;
+    flex-direction: column !important;
+}
+
+.carousel .carousel-indicators { 
+    bottom: 0px; 
+}
+
+.carousel a { 
+    text-decoration: none;
+}
+
+.carousel .carousel-indicators li { 
+    margin: 0 2px; 
+    width: 18px; 
+    height: 18px; 
+    background: transparent; 
+    border-color: #0056b8; 
+    border-width: 3px; 
+}
+
+.carousel .carousel-indicators li.active { 
+    background: rgba(0, 86, 184, 1); 
+}
+
+.carousel#video-carousel { 
+    padding-bottom: 50px; 
+}
+
+.carousel#video-carousel .carousel-inner { 
+    border: 2px solid #fff; 
+    background-color: #fff; 
+    justify-content: center; 
+    align-items: center;     
+    text-align: center;
+    margin: auto;
+    flex-direction: column; 
+}
+
+.carousel#video-carousel .carousel-inner .inner-content.vid-inner-content .youtube-video { 
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    text-align: center;      
+    justify-content: center; 
+    margin: auto;
+    flex-direction: column; 
+}
+
+.carousel#video-carousel .carousel-control { 
+    color: rgba(0, 86, 184, 1); 
+    width: 5%; 
+    line-height: 400px; 
+    background: none; 
+} 
+
+.carousel#video-carousel .carousel-control:hover, 
+.carousel#video-carousel .carousel-control:focus, 
+.carousel#video-carousel .carousel-control:active { 
+    color: rgba(0, 86, 184, 1); 
+}
+
+.carousel-control { 
+    width: 5%; 
+    background: transparent; 
+    text-shadow: none; 
+    color: rgba(0, 86, 184, 1); 
+    opacity: 1; 
+}
+
+@media (max-width: 768px){
+    .carousel .inner-content.vid-inner-content { 
+        height: 293px; 
+        width: 520px; 
+        display: inline-block;
+        justify-content: center; 
+        align-items: center;    
+        text-align: center;
+        margin: auto;
+        flex-direction: column; 
+    }
+    .carousel-control { 
+        width: 5%; 
+    }
+}
+
+@media (max-width: 414px){
+    .carousel .inner-content.vid-inner-content { 
+        height: 100%; 
+        width: 320px; 
+        display: inline-block; 
+        justify-content: center; 
+        align-items: center;     
+        text-align: center;
+        margin: auto;
+        flex-direction: column; 
+    }
+    .vid-carousel-control { 
+        display: none; 
+    }
+    .carousel .carousel-indicators { 
+        bottom: 40px; 
+    }
+}
+
+@media (max-width: 360px){
+    .carousel .inner-content.vid-inner-content { 
+        height: 100%; 
+        width: 266px; 
+        display: inline-block; 
+        justify-content: center; 
+        align-items: center;     
+        text-align: center;
+        margin: auto;
+        flex-direction: column; 
+    }
+    .vid-carousel-control { 
+        display: none; 
+    }
+    .carousel .carousel-indicators { 
+        bottom: 40px; 
+    }
+} 

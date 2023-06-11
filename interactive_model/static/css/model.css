@@ -1,0 +1,247 @@
+.webgl {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.webgl-1 {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.webgl-2 {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.webgl-2a {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.webgl-2b {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+nav.model {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    z-index: 2;
+    position: absolute;
+    padding: 2rem;
+    top: 0;
+}
+
+nav a.model {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding-right: 15rem;
+}
+
+nav ul.model {
+    list-style: none;
+    display: flex;
+    gap: 4rem;
+}
+
+nav.model-1 {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    z-index: 2;
+    position: absolute;
+    padding: 2rem;
+    top: 0;
+}
+
+nav a.model-1 {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding-right: 15rem;
+}
+
+nav ul.model-1 {
+    list-style: none;
+    display: flex;
+    gap: 4rem;
+}
+
+nav.model-2 {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    z-index: 2;
+    position: absolute;
+    padding: 2rem;
+    top: 0;
+}
+
+nav a.model-2 {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding-right: 15rem;
+}
+
+nav ul.model-2 {
+    list-style: none;
+    display: flex;
+    gap: 4rem;
+}
+
+nav.model-2a {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    z-index: 2;
+    position: absolute;
+    padding: 2rem;
+    top: 0;
+}
+
+nav a.model-2a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding-right: 15rem;
+}
+
+nav ul.model-2a {
+    list-style: none;
+    display: flex;
+    gap: 4rem;
+}
+
+nav.model-2b {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    z-index: 2;
+    position: absolute;
+    padding: 2rem;
+    top: 0;
+}
+
+nav a.model-2b {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding-right: 15rem;
+}
+
+nav ul.model-2b {
+    list-style: none;
+    display: flex;
+    gap: 4rem;
+}
+
+nav li.model-1:last-child {
+    margin-left: auto;
+}
+
+nav li.model-2:last-child {
+    margin-left: auto;
+}
+nav li.model-2a:last-child {
+    margin-left: auto;
+}
+nav li.model-2b:last-child {
+    margin-left: auto;
+}
+
+.title {
+    color: white;
+    z-index: 2;
+    position: absolute;
+    font-size: 3rem;
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%, -75%);
+}
+
+/* CSS */
+.model,
+.model {
+    margin-bottom: 30px; /* adjust as needed */
+}
+
+h4 {
+    margin: 20px 0; /* adjust as needed */
+}
+
+.model-sphere-intro,
+.model-house-intro {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#gui {
+    /* position: absolute;
+    top: 2px;
+    left: 2px; */
+}
+.legend {
+    /* background-color: black; */
+    color: black;
+    /* border-radius: 10px; */
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 0px;
+    padding-right: 100px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.stick-line {
+    width: 40px;
+    height: 10px;
+    margin-right: 5px;
+}
+
+.green-line {
+    background-color: green;
+}
+
+.blue-line {
+    background-color: blue;
+}
+
+.red-line {
+    background-color: red;
+}
+
+#my-gui-container-1 {
+    position: relative;
+}
+
+#my-gui-container-1 > div {
+    position: absolute;
+    top: 100;
+    right: 100;
+}
+
+/* @media (max-width: 414px) {
+    nav.model-2 {
+        top: 150px;
+    }
+    nav.model-2a {
+        top: 150px;
+    }
+    nav.model-2b {
+        top: 150px;
+    }
+} */
