@@ -1,1 +1,133 @@
-<h2>Hello World!</h2>
+{% extends "base.html" %} {% block content %} {% load static %} {% comment %}
+<div class="model-sphere-intro">
+    <h4>Sphere Model</h4>
+    <p>
+        Playing around with three.js. made this from a tutorial. Grab the sphere
+        and give it a spin
+    </p>
+    <div class="model-sphere col-md-12" id="model-container">
+        <canvas class="webgl"></canvas>
+        <nav class="model"></nav>
+        <link rel="stylesheet" href="{% static 'css/model.css' %}" />
+        <script type="module" src="{% static 'js/model.js' %}"></script>
+    </div>
+</div>
+{% endcomment %}
+<hr />
+<script>
+    var accessKeyID = "{{ AWS_ACCESS_KEY_ID }}";
+    var secretAccessKey = "{{ AWS_SECRET_ACCESS_KEY }}";
+</script>
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.103.0.min.js"></script>
+<script
+    id="myScript"
+    extensions-json="{% static 'json/extensions.json' %}"
+    house-json="{% static 'json/house.json' %}"
+    teide-model="{% static 'models/teide_1.glb' %}"
+></script>
+
+{% comment %}
+<div class="model-house-intro">
+    <h4>House Model</h4>
+    <p>
+        In my startup Lanu, we told people in the UK what they were allowed to
+        build onto their houses. We had the idea to map their house and then to
+        add these adjustable extensions that would change colour when they would
+        break the guidelines. This is a simple prototype of the idea.
+    </p>
+    <div class="model-box col-md-12" id="model-container-1">
+        <canvas class="webgl-1"></canvas>
+        <nav class="model-1">
+            <ul class="model-1">
+                <div id="my-gui-container"></div>
+            </ul>
+        </nav>
+        <link rel="stylesheet" href="{% static 'css/model.css' %}" />
+        <script type="module" src="{% static 'js/model_box.js' %}"></script>
+    </div>
+</div>
+{% endcomment %}
+
+<hr />
+
+<div class="model-house-neighs-intro">
+    <h4>Houses Model</h4>
+    <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab"
+                >Rear Extension</a
+            >
+        </li>
+        <li role="presentation">
+            <a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab"
+                >Side Extension</a
+            >
+        </li>
+        <li role="presentation">
+            <a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab"
+                >Loft Extension</a
+            >
+        </li>
+    </ul>
+    <div class="legend">
+        <div class="legend-item">
+            <div class="stick-line green-line"></div>
+            <div>PD</div>
+        </div>
+        <div class="legend-item">
+            <div class="stick-line blue-line"></div>
+            <div>PP</div>
+        </div>
+        <div class="legend-item">
+            <div class="stick-line red-line"></div>
+            <div>Error</div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="tab-1">
+            <div class="model-box col-md-12 padding_0" id="model-container-2">
+                <canvas class="webgl-2"></canvas>
+                <nav class="model-2">
+                    <ul class="model-2">
+                        <div id="my-gui-container-1"></div>
+                    </ul>
+                </nav>
+                <link rel="stylesheet" href="/static/css/model.css" />
+                <script type="module" src="/static/js/model_neighs.js"></script>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-2">
+            <div class="model-box col-md-12 padding_0" id="model-container-2a">
+                <canvas class="webgl-2a"></canvas>
+                <nav class="model-2a">
+                    <ul class="model-2a">
+                        <div id="my-gui-container-2"></div>
+                    </ul>
+                </nav>
+                <link rel="stylesheet" href="/static/css/model.css" />
+                <script
+                    type="module"
+                    src="/static/js/model_neighs1.js"
+                ></script>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-3">
+            <div class="model-box col-md-12 padding_0" id="model-container-2b">
+                <canvas class="webgl-2b"></canvas>
+                <nav class="model-2b">
+                    <ul class="model-2b">
+                        <div id="my-gui-container-3"></div>
+                    </ul>
+                </nav>
+                <link rel="stylesheet" href="/static/css/model.css" />
+                <script
+                    type="module"
+                    src="/static/js/model_neighs2.js"
+                ></script>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

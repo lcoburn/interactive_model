@@ -1,0 +1,92 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+
+<!-- Simple Page Needs
+================================================== -->
+<title>Luke Coburn</title>
+<meta charset="UTF-8"/>
+<meta name="description" content="Mat - Resume & vCard HTML Template"/>
+<meta name="keywords" content="personal, vcard, portfolio"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+<!-- Favicon
+================================================== -->  
+<link href={% static 'img/favicon.png' %} rel="shortcut icon" type="image/x-icon" />
+
+<!-- CSS
+================================================== -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/reset.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/custom.css' %}"/>
+<link rel="stylesheet" href="{% static 'cubeportfolio/css/cubeportfolio.min.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/owl.theme.css' %}"/> 
+<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/model.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/gallery.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/colors/yellow.css' %}" id="color"/>
+
+    
+<!-- Google Web fonts
+================================================== --> 
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900" rel="stylesheet"/>
+
+<!-- Font Icons
+================================================== --> 
+<link rel="stylesheet" href="{% static 'icon-fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}"/>
+<link rel="stylesheet" href="{% static 'icon-fonts/web-design/flaticon.css' %}" />
+
+<!--[if lt IE 9]>
+	<script src="{% static 'http://html5shim.googlecode.com/svn/trunk/html5.js' %}"></script>
+<![endif]-->
+
+</head>
+
+<body>
+<!-- Preloading -->
+<div id="preloader">
+    <div class="spinner">
+    </div>
+</div>  
+    
+<!-- Wrapper --> 
+<div class="wrapper top_60 container"/>
+<div class="row"/>
+
+{% block content %}
+
+{% endblock %}
+
+</div> <!-- Row - End --> 
+
+</div> <!-- Wrapper - End -->   
+
+<!--  footer --> 
+{% comment %} {% include "includes/footer.html" %} {% endcomment %}
+
+<!-- Javascripts
+================================================== -->  
+<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script> 
+<script src="{% static 'cubeportfolio/js/jquery.cubeportfolio.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script> 
+<script src="{% static 'js/jquery.easytabs.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script> 
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<!-- for color alternatives -->
+<script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script>
+{% comment %} <script src="{% static 'js/Demo.js' %}"></script> {% endcomment %}
+<script src="{% static 'js/carousel.js' %}"></script>
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script> {% endcomment %}
+{% comment %} <script src="{% static 'js/model.js' %}"></script> {% endcomment %}
+{% comment %} <script type="module" src="{% static 'js/model.js' %}"></script> {% endcomment %}
+
+<link rel="stylesheet" href="{% static 'css/Demo.min.css' %}" />
+
+</body>
+</html>
+
