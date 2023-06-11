@@ -1,0 +1,1 @@
+web gunicorn interactive_model.wsgi:application --log-file -
