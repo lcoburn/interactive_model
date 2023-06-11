@@ -1,31 +1,11 @@
-{% extends "base.html" %} {% block content %} {% load static %} {% comment %}
-<div class="model-sphere-intro">
-    <h4>Sphere Model</h4>
-    <p>
-        Playing around with three.js. made this from a tutorial. Grab the sphere
-        and give it a spin
-    </p>
-    <div class="model-sphere col-md-12" id="model-container">
-        <canvas class="webgl"></canvas>
-        <nav class="model"></nav>
-        <link rel="stylesheet" href="{% static 'css/model.css' %}" />
-        <script type="module" src="{% static 'js/model.js' %}"></script>
-    </div>
-</div>
-{% endcomment %}
-<hr />
+{% extends "base.html" %} {% block content %} {% load static %}
+
 <script>
     var accessKeyID = "{{ AWS_ACCESS_KEY_ID }}";
     var secretAccessKey = "{{ AWS_SECRET_ACCESS_KEY }}";
 </script>
 
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.103.0.min.js"></script>
-<script
-    id="myScript"
-    extensions-json="{% static 'json/extensions.json' %}"
-    house-json="{% static 'json/house.json' %}"
-    teide-model="{% static 'models/teide_1.glb' %}"
-></script>
 
 {% comment %}
 <div class="model-house-intro">
@@ -48,8 +28,6 @@
     </div>
 </div>
 {% endcomment %}
-
-<hr />
 
 <div class="model-house-neighs-intro">
     <h4>Houses Model</h4>
