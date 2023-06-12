@@ -154,7 +154,7 @@ loader1.load().then((geometries) => {
         depth: depth_box,
         height: height_box,
         color1: "#00ff00",
-        color2: "#0000ff",
+        color2: "#ffa500",
         color3: "#ff0000",
     };
 
