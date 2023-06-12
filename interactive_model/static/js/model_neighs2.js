@@ -26,7 +26,7 @@ loader.load().then((geometries) => {
     geometries.forEach((geometry, index) => {
         // Create a material
         const material = new THREE.MeshStandardMaterial({
-            color: 0xfffff,
+            color: 0xffffff,
             transparent: true,
             opacity: 0.8,
         });
