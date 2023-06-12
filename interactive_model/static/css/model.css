@@ -236,12 +236,12 @@ h4 {
 
 @media (max-width: 414px) {
     nav.model-2 {
-        top: 150px;
+        padding-top: 185px;
     }
     nav.model-2a {
-        top: 150px;
+        padding-top: 185px;
     }
     nav.model-2b {
-        top: 150px;
+        padding-top: 185px;
     }
 }
