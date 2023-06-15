@@ -193,7 +193,7 @@ loader1.load().then((geometries) => {
 });
 
 // Sizes
-const width = document.getElementById("model-container-2").clientWidth - 30; // - 30 to account for padding (15 either side)
+const width = document.getElementById("model-container-2").clientWidth;
 const sizes = {
     width: width,
     height: 0.5 * width,
