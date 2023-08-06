@@ -87,7 +87,22 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+# settings.py
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': config('MONGODB_AUCTIONEER_AUTHSOURCE'),  # Change this to your MongoDB database name
+#         'ENFORCE_SCHEMA': False,
+#         'CLIENT': {
+#             'host': config('MONGODB_AUCTIONEER_HOST'),  # Change this to your MongoDB host (e.g., 'localhost')
+#             'port': 27017,  # Change this to your MongoDB port (default is 27017)
+#             'username': config('MONGODB_AUCTIONEER_USERNAME'),  # If you have authentication enabled
+#             'password': config('MONGODB_AUCTIONEER_KEY'),  # If you have authentication enabled
+#             'authSource': config('MONGODB_AUCTIONEER_AUTHSOURCE'),  # If you have authentication enabled
+#             'authMechanism': config('MONGODB_AUCTIONEER_AUTHMECHANISM'),  # If you have authentication enabled
+#         }
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

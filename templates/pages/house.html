@@ -1,0 +1,21 @@
+<!-- your_template.html -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JSON Data</title>
+    </head>
+    <body>
+        <script>
+            // Access the JSON data as a global variable
+            var jsonData = {{ house_data|safe }};
+
+            // Display the JSON data on the HTML page
+            var jsonDataString = JSON.stringify(jsonData, null, 2); // Pretty-print the JSON data
+            var preElement = document.createElement('pre');
+            preElement.textContent = jsonDataString;
+            document.body.appendChild(preElement);
+
+            console.log(jsonData);  // Use jsonData as needed in your JavaScript code
+        </script>
+    </body>
+</html>
