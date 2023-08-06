@@ -1,0 +1,8 @@
+django
+json
+decouple
+certifi
+os
+pathlib
+dj_database_url
+pymongo
