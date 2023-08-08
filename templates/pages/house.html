@@ -1,22 +1,140 @@
-<!-- your_template.html -->
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>JSON Data</title>
-    </head>
-    <body>
-        <pre>{{ house_data }}</pre>
-        <script>
-            // Access the JSON data as a global variable
-            var jsonData = {{ house_data|safe }};
+{% extends "base.html" %} {% block content %} {% load static %}
 
-            // Display the JSON data on the HTML page
-            var jsonDataString = JSON.stringify(jsonData, null, 2); // Pretty-print the JSON data
-            var preElement = document.createElement('pre');
-            preElement.textContent = jsonDataString;
-            document.body.appendChild(preElement);
+<script>
+    // Access specific properties within the data object
+    var houseInfoStr = "{{ house_data.houseInfo|safe }}";
+    var houseInfo = JSON.parse(houseInfoStr.replace(/'/g, '"'));
+    // console.log(houseInfo);
+    var housesGeometryStr = "{{ house_data.housesGeometry|safe }}";
+    var housesGeometry = JSON.parse(housesGeometryStr.replace(/'/g, '"'));
+    var sitesGeometryStr = "{{ house_data.sitesGeometry|safe }}";
+    var sitesGeometry = JSON.parse(sitesGeometryStr.replace(/'/g, '"'));
+    var adjustableCasesCaseStr = "{{ house_data.adjustableCases.case1|safe }}";
+    var adjustableCases = JSON.parse(adjustableCasesCaseStr);
+    // console.log(adjustableCases);
+    // console.log(typeof adjustableCases);
 
-            console.log(jsonData);  // Use jsonData as needed in your JavaScript code
-        </script>
-    </body>
-</html>
+    // console.log(typeof houseData);
+    // var houseInfo = house_data.houseInfo;
+    // var housesGeometry = houseData.housesGeometry;
+    // var sitesGeometry = houseData.sitesGeometry;
+    // var adjustableCases = houseData.adjustableCases;
+    // console.log("data", houseData);
+    // console.log("info", houseInfo);
+    // var houseId = houseInfo.id;
+    // var postcode = houseInfo.postcode;
+    // var floorArea = houseInfo.floor_area;
+    // var address_string = houseInfo.address_string;
+    var Luke = "Lukey";
+    function clickButton(jsonFileLocation) {
+        console.log("yay");
+        console.log(jsonFileLocation);
+
+        const loader = new JsonGeometryLoader(jsonFileLocation);
+        loader.load().then((geometries) => {
+            // see below
+        });
+    }
+</script>
+
+<script src="{% static 'djangojs/jquery.json.min.js' %}"></script>
+
+<script>
+    var accessKeyID = "{{ AWS_ACCESS_KEY_ID }}";
+    var secretAccessKey = "{{ AWS_SECRET_ACCESS_KEY }}";
+</script>
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.103.0.min.js"></script>
+
+<script type="module" src="/static/js/model_neighs.js"></script>
+
+<pre>{{ house_data }}</pre>
+<pre>{{ house_data.adjustableCases.case1 }}</pre>
+<h4>
+    Interactive extensions for
+    <span id="house-address">{{ house_data.houseInfo.address_string }}</span>
+</h4>
+<p>Text</p>
+
+<!-- <div class="model-house-neighs-intro">
+    <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab"
+                >Rear</a
+            >
+        </li>
+        <li role="presentation">
+            <a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab"
+                >Side</a
+            >
+        </li>
+        <li role="presentation">
+            <a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab"
+                >Loft</a
+            >
+        </li>
+    </ul>
+    <div class="legend">
+        <div class="legend-item">
+            <div class="stick-line green-line"></div>
+            <div>PD</div>
+        </div>
+        <div class="legend-item">
+            <div class="stick-line orange-line"></div>
+            <div>PP</div>
+        </div>
+        <div class="legend-item">
+            <div class="stick-line red-line"></div>
+            <div>Error</div>
+        </div>
+    </div> -->
+<!-- <div class="tab-content"> -->
+<!-- <div role="tabpanel" class="tab-pane active" id="tab-1"> -->
+<button
+    onclick="clickButton('https://lukecoburn.s3.eu-west-2.amazonaws.com/extensions3.json')"
+>
+    Click me
+</button>
+<div class="model-box col-md-12 padding_0" id="model-container-2">
+    <canvas class="webgl-2"></canvas>
+    <nav class="model-2">
+        <ul class="model-2">
+            <div id="my-gui-container-1"></div>
+        </ul>
+    </nav>
+    <link rel="stylesheet" href="/static/css/model.css" />
+</div>
+<!-- </div>
+        <div role="tabpanel" class="tab-pane" id="tab-2">
+            <div class="model-box col-md-12 padding_0" id="model-container-2a">
+                <canvas class="webgl-2a"></canvas>
+                <nav class="model-2a">
+                    <ul class="model-2a">
+                        <div id="my-gui-container-2"></div>
+                    </ul>
+                </nav>
+                <link rel="stylesheet" href="/static/css/model.css" />
+                <script
+                    type="module"
+                    src="/static/js/model_neighs1.js"
+                ></script>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-3">
+            <div class="model-box col-md-12 padding_0" id="model-container-2b">
+                <canvas class="webgl-2b"></canvas>
+                <nav class="model-2b">
+                    <ul class="model-2b">
+                        <div id="my-gui-container-3"></div>
+                    </ul>
+                </nav>
+                <link rel="stylesheet" href="/static/css/model.css" />
+                <script
+                    type="module"
+                    src="/static/js/model_neighs2.js"
+                ></script>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock content %}

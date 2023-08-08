@@ -1,4 +1,6 @@
 console.log("*** House Neighs Rear ***");
+console.log(Luke);
+console.log(houseInfoStr);
 
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0";
 import { gsap } from "https://cdn.skypack.dev/gsap@3.9.1";
@@ -223,3 +225,11 @@ const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(2);
 renderer.render(scene, camera);
+
+function clickButton(jsonFileLocation) {
+    console.log("yay");
+    const loader = new JsonGeometryLoader(jsonFileLocation);
+    loader.load().then((geometries) => {
+        // see below
+    });
+}
