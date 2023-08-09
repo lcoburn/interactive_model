@@ -7,7 +7,6 @@ from decouple import config
 class AuctioneerData(models.Model):
     # Define your model fields here
     
-
     @staticmethod
     def get_auctioneer_data(data_id):
         MONGODB_AUCTIONEER_KEY = config('MONGODB_AUCTIONEER_KEY', default='')
