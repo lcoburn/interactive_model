@@ -9,9 +9,26 @@
     var housesGeometry = JSON.parse(housesGeometryStr.replace(/'/g, '"'));
     var sitesGeometryStr = "{{ house_data.sitesGeometry|safe }}";
     var sitesGeometry = JSON.parse(sitesGeometryStr.replace(/'/g, '"'));
-    var adjustableCasesCaseStr = "{{ house_data.adjustableCases.case1|safe }}";
-    var adjustableCases = JSON.parse(adjustableCasesCaseStr);
-    // console.log(adjustableCases);
+    var adjustableCasesStr = "{{ house_data.adjustableCases|safe }}";
+    var adjustableCases = JSON.parse(
+        adjustableCasesStr
+            .replace(/'/g, '"')
+            .replace(/None/g, "null")
+            .replace(/True/g, "true")
+            .replace(/False/g, "false")
+    );
+    var houseDataStr = "{{ house_data|safe }}";
+    var houseData = JSON.parse(
+        houseDataStr
+            .replace(/'/g, '"')
+            .replace(/None/g, "null")
+            .replace(/True/g, "true")
+            .replace(/False/g, "false")
+    );
+    console.log(houseData);
+    // console.log(adjustableCasesCaseStr);
+    // var adjustableCases = JSON.parse(adjustableCasesCaseStr);
+    console.log(housesGeometry);
     // console.log(typeof adjustableCases);
 
     // console.log(typeof houseData);

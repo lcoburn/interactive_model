@@ -1,6 +1,7 @@
 console.log("*** House Neighs Rear ***");
 console.log(Luke);
 console.log(houseInfoStr);
+console.log(houseData.houseInfo);
 
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0";
 import { gsap } from "https://cdn.skypack.dev/gsap@3.9.1";
