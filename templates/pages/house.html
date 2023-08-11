@@ -1,10 +1,12 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
+<script type="module" src="/static/js/model_dynamic.js"></script>
+<button id="load-model">Click me</button>
+
 <script>
     // Access specific properties within the data object
     var houseInfoStr = "{{ house_data.houseInfo|safe }}";
     var houseInfo = JSON.parse(houseInfoStr.replace(/'/g, '"'));
-    // console.log(houseInfo);
     var housesGeometryStr = "{{ house_data.housesGeometry|safe }}";
     var housesGeometry = JSON.parse(housesGeometryStr.replace(/'/g, '"'));
     var sitesGeometryStr = "{{ house_data.sitesGeometry|safe }}";
@@ -25,33 +27,53 @@
             .replace(/True/g, "true")
             .replace(/False/g, "false")
     );
-    console.log(houseData);
-    // console.log(adjustableCasesCaseStr);
-    // var adjustableCases = JSON.parse(adjustableCasesCaseStr);
-    console.log(housesGeometry);
-    // console.log(typeof adjustableCases);
 
-    // console.log(typeof houseData);
-    // var houseInfo = house_data.houseInfo;
-    // var housesGeometry = houseData.housesGeometry;
-    // var sitesGeometry = houseData.sitesGeometry;
-    // var adjustableCases = houseData.adjustableCases;
-    // console.log("data", houseData);
-    // console.log("info", houseInfo);
-    // var houseId = houseInfo.id;
-    // var postcode = houseInfo.postcode;
-    // var floorArea = houseInfo.floor_area;
-    // var address_string = houseInfo.address_string;
-    var Luke = "Lukey";
-    function clickButton(jsonFileLocation) {
-        console.log("yay");
-        console.log(jsonFileLocation);
+    var currentKey = "case1"; // initialize with a case1
+    // loadModel(currentKey);
 
-        const loader = new JsonGeometryLoader(jsonFileLocation);
-        loader.load().then((geometries) => {
-            // see below
+    document.addEventListener("DOMContentLoaded", function (event) {
+        // Create a Map to store the data associated with each button
+        let dataMap = new Map();
+        // Get the keys from the dictionary
+        const keys = Object.keys(adjustableCases);
+
+        // Get the container where you want to add the buttons
+        const buttonContainer = document.getElementById("button-container");
+
+        // Iterate over the keys
+        keys.forEach((key) => {
+            // Create a new button element
+            const btn = document.createElement("button");
+
+            // Set the button's text to the case_name from the dictionary using the key
+            btn.innerHTML = adjustableCases[key].case_name;
+            btn.id = key;
+            btn.classList.add("load-model-btn");
+
+            // Add an event listener to the button
+            btn.addEventListener("click", function () {
+                // Store the data in the Map with the button's key as the map key
+                dataMap.set(key, adjustableCases[key]);
+                // Log or use the data
+                console.log(dataMap.get(key));
+                // Update the global variable
+                currentKey = key;
+
+                // Store the data in the Map with the button's key as the map key
+                dataMap.set(key, adjustableCases[key]);
+
+                // Log or use the data
+                console.log(dataMap.get(key));
+
+                // For debugging, you can also log the current value of currentKey
+                console.log("Current key:", currentKey, typeof currentKey);
+
+                // loadModel(currentKey); // replace newGeometries with the actual geometry data you want to load
+            });
+            // Append the button to the container
+            buttonContainer.appendChild(btn);
         });
-    }
+    });
 </script>
 
 <script src="{% static 'djangojs/jquery.json.min.js' %}"></script>
@@ -62,8 +84,6 @@
 </script>
 
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.103.0.min.js"></script>
-
-<script type="module" src="/static/js/model_neighs.js"></script>
 
 <pre>{{ house_data }}</pre>
 <pre>{{ house_data.adjustableCases.case1 }}</pre>
@@ -107,16 +127,13 @@
     </div> -->
 <!-- <div class="tab-content"> -->
 <!-- <div role="tabpanel" class="tab-pane active" id="tab-1"> -->
-<button
-    onclick="clickButton('https://lukecoburn.s3.eu-west-2.amazonaws.com/extensions3.json')"
->
-    Click me
-</button>
-<div class="model-box col-md-12 padding_0" id="model-container-2">
-    <canvas class="webgl-2"></canvas>
-    <nav class="model-2">
-        <ul class="model-2">
-            <div id="my-gui-container-1"></div>
+
+<div id="button-container"></div>
+<div class="model-box col-md-12 padding_0" id="model-container">
+    <canvas class="webgl"></canvas>
+    <nav class="model">
+        <ul class="model">
+            <div id="my-gui-container"></div>
         </ul>
     </nav>
     <link rel="stylesheet" href="/static/css/model.css" />
