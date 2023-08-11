@@ -151,6 +151,12 @@ function loadExtensions(scene, loader, centreX, centreY) {
         });
         // Create a mesh with the geometry and material
         let cube = new THREE.Mesh(geometry, material);
+        const edges = new THREE.EdgesGeometry(cube.geometry);
+        const line = new THREE.LineSegments(
+            edges,
+            new THREE.LineBasicMaterial({ color: 0xffffff })
+        );
+        cube.add(line);
         // Add the mesh to the scene
         scene.add(cube);
     });
