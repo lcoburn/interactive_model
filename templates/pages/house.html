@@ -1,7 +1,6 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
 <script type="module" src="/static/js/model_dynamic.js"></script>
-<button id="load-model">Click me</button>
 
 <script>
     // Access specific properties within the data object
@@ -27,9 +26,19 @@
             .replace(/True/g, "true")
             .replace(/False/g, "false")
     );
-
+    var main_block = housesGeometry.Main[0];
+    let centreX = 0;
+    let centreY = 0;
+    let centreZ = 0;
+    for (let i = 0; i < main_block.vertices.length; i++) {
+        centreX += main_block.vertices[i].x;
+        centreY += main_block.vertices[i].y;
+        centreZ += main_block.vertices[i].z;
+    }
+    centreX = centreX / main_block.vertices.length;
+    centreY = centreY / main_block.vertices.length;
+    centreZ = centreZ / main_block.vertices.length;
     var currentKey = "case1"; // initialize with a case1
-    // loadModel(currentKey);
 
     document.addEventListener("DOMContentLoaded", function (event) {
         // Create a Map to store the data associated with each button
@@ -54,21 +63,10 @@
             btn.addEventListener("click", function () {
                 // Store the data in the Map with the button's key as the map key
                 dataMap.set(key, adjustableCases[key]);
-                // Log or use the data
-                console.log(dataMap.get(key));
                 // Update the global variable
                 currentKey = key;
-
                 // Store the data in the Map with the button's key as the map key
                 dataMap.set(key, adjustableCases[key]);
-
-                // Log or use the data
-                console.log(dataMap.get(key));
-
-                // For debugging, you can also log the current value of currentKey
-                console.log("Current key:", currentKey, typeof currentKey);
-
-                // loadModel(currentKey); // replace newGeometries with the actual geometry data you want to load
             });
             // Append the button to the container
             buttonContainer.appendChild(btn);
@@ -85,48 +83,24 @@
 
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.103.0.min.js"></script>
 
-<pre>{{ house_data }}</pre>
-<pre>{{ house_data.adjustableCases.case1 }}</pre>
-<h4>
-    Interactive extensions for
+<h5>
     <span id="house-address">{{ house_data.houseInfo.address_string }}</span>
-</h4>
-<p>Text</p>
+</h5>
 
-<!-- <div class="model-house-neighs-intro">
-    <ul class="nav nav-tabs" id="myTabs" role="tablist">
-        <li role="presentation" class="active">
-            <a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab"
-                >Rear</a
-            >
-        </li>
-        <li role="presentation">
-            <a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab"
-                >Side</a
-            >
-        </li>
-        <li role="presentation">
-            <a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab"
-                >Loft</a
-            >
-        </li>
-    </ul>
-    <div class="legend">
-        <div class="legend-item">
-            <div class="stick-line green-line"></div>
-            <div>PD</div>
-        </div>
-        <div class="legend-item">
-            <div class="stick-line orange-line"></div>
-            <div>PP</div>
-        </div>
-        <div class="legend-item">
-            <div class="stick-line red-line"></div>
-            <div>Error</div>
-        </div>
-    </div> -->
-<!-- <div class="tab-content"> -->
-<!-- <div role="tabpanel" class="tab-pane active" id="tab-1"> -->
+<div class="legend">
+    <div class="legend-item">
+        <div class="stick-line green-line"></div>
+        <div>PD</div>
+    </div>
+    <div class="legend-item">
+        <div class="stick-line orange-line"></div>
+        <div>PP</div>
+    </div>
+    <div class="legend-item">
+        <div class="stick-line red-line"></div>
+        <div>Error</div>
+    </div>
+</div>
 
 <div id="button-container"></div>
 <div class="model-box col-md-12 padding_0" id="model-container">
@@ -138,37 +112,5 @@
     </nav>
     <link rel="stylesheet" href="/static/css/model.css" />
 </div>
-<!-- </div>
-        <div role="tabpanel" class="tab-pane" id="tab-2">
-            <div class="model-box col-md-12 padding_0" id="model-container-2a">
-                <canvas class="webgl-2a"></canvas>
-                <nav class="model-2a">
-                    <ul class="model-2a">
-                        <div id="my-gui-container-2"></div>
-                    </ul>
-                </nav>
-                <link rel="stylesheet" href="/static/css/model.css" />
-                <script
-                    type="module"
-                    src="/static/js/model_neighs1.js"
-                ></script>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="tab-3">
-            <div class="model-box col-md-12 padding_0" id="model-container-2b">
-                <canvas class="webgl-2b"></canvas>
-                <nav class="model-2b">
-                    <ul class="model-2b">
-                        <div id="my-gui-container-3"></div>
-                    </ul>
-                </nav>
-                <link rel="stylesheet" href="/static/css/model.css" />
-                <script
-                    type="module"
-                    src="/static/js/model_neighs2.js"
-                ></script>
-            </div>
-        </div>
-    </div>
-</div> -->
+
 {% endblock content %}
