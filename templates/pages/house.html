@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
 <script type="module" src="/static/js/model_dynamic.js"></script>
+<link rel="stylesheet" href="/static/css/model_dynamic.css" />
 
 <script>
     // Access specific properties within the data object
@@ -103,7 +104,7 @@
 </div>
 
 <div id="button-container"></div>
-<div class="model-box col-md-12 padding_0" id="model-container">
+<!-- <div class="model-box col-md-12 padding_0" id="model-container">
     <canvas class="webgl"></canvas>
     <nav class="model">
         <ul class="model">
@@ -111,6 +112,58 @@
         </ul>
     </nav>
     <link rel="stylesheet" href="/static/css/model.css" />
+</div> -->
+
+<div class="container">
+    <div class="model-box col-md-9 padding_0" id="model-container">
+        <canvas class="webgl"></canvas>
+    </div>
+
+    <div class="side-box">
+        <div class="top-content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque...
+            <!-- A truncated version of Lorem Ipsum. You can expand it as needed. -->
+        </div>
+        <div class="bottom-content">
+            Lorem ipsum...
+            <!-- A shorter version of Lorem Ipsum for the bottom 20% section. -->
+        </div>
+    </div>
+</div>
+
+<div class="gui-containers">
+    <div class="box">
+        <nav class="model">
+            <ul class="model">
+                <div id="my-gui-container-1"></div>
+            </ul>
+        </nav>
+    </div>
+    <div class="box">
+        <nav class="model">
+            <ul class="model">
+                <div id="my-gui-container-2"></div>
+            </ul>
+        </nav>
+    </div>
+    <div class="box">
+        <nav class="model">
+            <ul class="model">
+                <div id="my-gui-container-3"></div>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Main top section -->
+    <div class="main-box"></div>
+    <div class="side-box"></div>
+
+    <!-- 3 boxes below main section -->
+    <div class="small-box"></div>
+    <div class="small-box"></div>
+    <div class="small-box"></div>
 </div>
 
 {% endblock content %}

@@ -34,7 +34,6 @@ nav.model {
     justify-content: space-between;
     color: white;
     z-index: 2;
-    position: absolute;
     padding: 2rem;
     top: 0;
 }
@@ -232,6 +231,15 @@ h4 {
     position: absolute;
     top: 100;
     right: 100;
+}
+
+.gui-containers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gui-containers > div {
+    width: 30%;
 }
 
 @media (max-width: 414px) {
