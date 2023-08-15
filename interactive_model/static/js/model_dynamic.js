@@ -7,17 +7,17 @@ import CubeUpdater from "./cubeupdaternew.js";
 
 // Event Listener for button click
 document.addEventListener("DOMContentLoaded", (event) => {
-    loadModel(currentKey);
+    loadModel();
     const buttons = document.querySelectorAll(".load-model-btn");
     buttons.forEach((button) => {
-        button.addEventListener("click", () => loadModel(button.id));
+        button.addEventListener("click", () => {
+            loadModel();
+        });
     });
 });
 
 // Load model function
-export function loadModel(casekey) {
-    console.log("****", casekey, typeof casekey);
-    console.log("****>", adjustableCases);
+export function loadModel() {
     // Create Scene
     const scene = new THREE.Scene();
 
@@ -27,6 +27,12 @@ export function loadModel(casekey) {
     let geometries = housesGeometry.Main.concat(
         housesGeometry.Left,
         housesGeometry.Right
+    );
+    var house_width = Math.abs(
+        geometries[0].vertices[1].x - geometries[0].vertices[0].x
+    );
+    var house_depth = Math.abs(
+        geometries[0].vertices[2].z - geometries[0].vertices[0].z
     );
 
     geometries.forEach((geometryTemp, index) => {
@@ -58,7 +64,7 @@ export function loadModel(casekey) {
         scene.add(cube);
     });
 
-    loadExtensions(scene, loader);
+    loadExtensions(scene, loader, house_width, house_depth);
 
     // Sizes
     const width = document.getElementById("model-container").clientWidth;
@@ -122,67 +128,64 @@ export function loadModel(casekey) {
     loop();
     // Timeline magic
     const tl = gsap.timeline({ defaults: { duration: 1 } });
-    // tl.fromTo(cube.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
 }
 
-function loadExtensions(scene, loader) {
+function loadExtensions(scene, loader, house_width, house_depth) {
     let adjustableGeometries = adjustableCases[currentKey]["geometry"];
     var adjustable_values;
     var adjustable_walls;
     // Variables for dimensions
     let count = 0;
+
+    // remove existing GUI;
+    for (let i = 1; i < 4; i++) {
+        document.getElementById(`my-gui-container-${i}`).innerHTML = "";
+    }
+
     adjustableGeometries.forEach((adjustableGeometry) => {
         let geometry = loader.createGeometry(adjustableGeometry);
         adjustable_values =
             adjustableCases[currentKey].geometry[count].adjustable_values;
         adjustable_walls =
             adjustableCases[currentKey].geometry[count].adjustable_walls;
-        console.log(geometry);
 
         // Create a material
         const material = new THREE.MeshStandardMaterial({
             color: 0x00ff00,
-            transparent: true,
             opacity: 1,
         });
         // Create a mesh with the geometry and material
         let cube = new THREE.Mesh(geometry, material);
-        // const edges = new THREE.EdgesGeometry(cube.geometry);
-        // const line = new THREE.LineSegments(
-        //     edges,
-        //     new THREE.LineBasicMaterial({ color: 0xffffff })
-        // );
-        // cube.add(line);
         // Add the mesh to the scene
         scene.add(cube);
-        const elememt_id = "my-gui-container-".concat((count + 1).toString());
-        const ext_type = "rear";
-        createGUI(
-            elememt_id,
-            cube,
-            ext_type,
-            adjustable_values,
-            adjustable_walls
-        );
         count += 1;
+        createGUI(
+            count,
+            cube,
+            adjustable_values,
+            adjustable_walls,
+            house_width,
+            house_depth
+        );
     });
 }
 
 function createGUI(
-    elememt_id,
+    count,
     cube,
-    ext_type,
     adjustable_values,
-    adjustable_walls
+    adjustable_walls,
+    house_width,
+    house_depth
 ) {
+    const elememt_id = "my-gui-container-".concat(count.toString());
+    const gui_id = "gui-".concat(count.toString());
+
     // Create a new GUI
     var gui = new GUI({ autoPlace: false });
-    gui.domElement.id = "gui";
+    gui.domElement.id = gui_id;
     var customContainer = document.getElementById(elememt_id);
     customContainer.appendChild(gui.domElement);
-
-    // Append it to your container
-    document.getElementById(elememt_id).appendChild(gui.domElement);
 
     var box3 = new THREE.Box3().setFromObject(cube);
     var size = new THREE.Vector3();
@@ -244,6 +247,8 @@ function createGUI(
         color2: "#ffa500",
         color3: "#ff0000",
         Position: positions,
+        H_Offset: 0,
+        V_Offset: 0,
     };
 
     // Get initial position
@@ -253,15 +258,7 @@ function createGUI(
         positions.getZ(0)
     );
 
-    // CubeUpdater.updateCubeDepth(
-    //     cube,
-    //     cubeDimensions,
-    //     initialPosition,
-    //     ext_type,
-    //     adjustable_values,
-    //     adjustable_walls,
-    //     initialPositionsArray
-    // );
+    CubeUpdater.initialCube(cube, cubeDimensions, initialPosition);
 
     // Add sliders to the GUI
     // Slider cases
@@ -272,7 +269,6 @@ function createGUI(
     }
     if (adjustable_walls.back && !adjustable_walls.front) {
         console.log("back only: Depth Slider to Rear");
-        console.log(adjustable_values);
         console.log("depths:", min_depth, max_pd_d, max_pp_d);
         gui.add(cubeDimensions, "Depth", min_depth, max_pp_d + 0.5).onChange(
             (Depth) =>
@@ -280,8 +276,6 @@ function createGUI(
                     cube,
                     { ...cubeDimensions, Depth },
                     initialPosition,
-                    adjustable_values,
-                    adjustable_walls,
                     boundary,
                     min_depth,
                     max_pd_d,
@@ -294,13 +288,60 @@ function createGUI(
     }
     if (adjustable_walls.left && adjustable_walls.right) {
         console.log("left and right: Pinch Horizontally Slider");
+        gui.add(cubeDimensions, "Width", house_width / 2, house_width).onChange(
+            (Width) =>
+                CubeUpdater.updateCubeWidthSqueeze(
+                    cube,
+                    { ...cubeDimensions, Width },
+                    initialPosition,
+                    boundary,
+                    min_depth
+                )
+        );
         console.log("and horizontal position slider");
+        gui.add(cubeDimensions, "H_Offset", 0.01, house_width / 2.0).onChange(
+            (H_Offset) =>
+                CubeUpdater.updateCubeWidthSlider(
+                    cube,
+                    { ...cubeDimensions, H_Offset },
+                    initialPosition,
+                    boundary
+                )
+        );
     }
     if (adjustable_walls.left && !adjustable_walls.right) {
         console.log("left only: Width Slider to Left");
+
+        gui.add(cubeDimensions, "Width", min_width, max_pp_w + 0.5).onChange(
+            (Width) =>
+                CubeUpdater.updateCubeWidth(
+                    cube,
+                    { ...cubeDimensions, Width },
+                    initialPosition,
+                    boundary,
+                    min_depth,
+                    max_pd_w,
+                    max_pp_w,
+                    1
+                )
+        );
     }
     if (!adjustable_walls.left && adjustable_walls.right) {
         console.log("right only: Width Slider to Right");
+
+        gui.add(cubeDimensions, "Width", min_width, max_pp_w + 0.5).onChange(
+            (Width) =>
+                CubeUpdater.updateCubeWidth(
+                    cube,
+                    { ...cubeDimensions, Width },
+                    initialPosition,
+                    boundary,
+                    min_depth,
+                    max_pd_w,
+                    max_pp_w,
+                    -1
+                )
+        );
     }
 
     // if (adjustable_walls.back || adjustable_walls.front) {
