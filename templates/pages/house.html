@@ -41,6 +41,53 @@
     centreZ = centreZ / main_block.vertices.length;
     var currentKey = "case1"; // initialize with a case1
 
+    // calculate site area
+    var site_area = 0;
+    var site_x = sitesGeometry.Main[0][0];
+    var site_y = sitesGeometry.Main[0][1];
+    // calculate site area from the x and y arrays
+    for (let i = 0; i < site_x.length - 1; i++) {
+        site_area += site_x[i] * site_y[i + 1] - site_x[i + 1] * site_y[i];
+    }
+    site_area = Math.abs(site_area / 2.0);
+    console.log("site_area", site_area);
+
+    // calculate footprint area
+    var footprint_area = 0;
+    // loop through all the geometries of the houseGeometry.Main and select the ones on the lowest level
+    for (let i = 0; i < housesGeometry.Main.length; i++) {
+        var house = housesGeometry.Main[i];
+        var lowest_level = house.vertices[0].y;
+        for (let j = 0; j < house.vertices.length; j++) {
+            if (house.vertices[j].y < lowest_level) {
+                lowest_level = house.vertices[j].y;
+            }
+        }
+        // if the lowest level is 0, then it is a footprint
+        if (lowest_level == 0) {
+            // calculate the area of the footprint
+            var x = [];
+            var y = [];
+            for (let j = 0; j < house.vertices.length; j++) {
+                x.push(house.vertices[j].x);
+                y.push(house.vertices[j].z);
+            }
+            for (let j = 0; j < x.length - 1; j++) {
+                footprint_area += x[j] * y[j + 1] - x[j + 1] * y[j];
+            }
+            footprint_area = Math.abs(footprint_area / 4.0);
+        }
+    }
+    var house_width = Math.abs(
+        housesGeometry.Main[0].vertices[1].x -
+            housesGeometry.Main[0].vertices[0].x
+    );
+    var house_depth = Math.abs(
+        housesGeometry.Main[0].vertices[2].z -
+            housesGeometry.Main[0].vertices[0].z
+    );
+    console.log("footprint_area", footprint_area, house_width * house_depth);
+
     document.addEventListener("DOMContentLoaded", function (event) {
         // Create a Map to store the data associated with each button
         let dataMap = new Map();

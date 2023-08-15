@@ -28,12 +28,6 @@ export function loadModel() {
         housesGeometry.Left,
         housesGeometry.Right
     );
-    var house_width = Math.abs(
-        geometries[0].vertices[1].x - geometries[0].vertices[0].x
-    );
-    var house_depth = Math.abs(
-        geometries[0].vertices[2].z - geometries[0].vertices[0].z
-    );
 
     geometries.forEach((geometryTemp, index) => {
         const geometry = loader.createGeometry(geometryTemp);
@@ -247,7 +241,7 @@ function createGUI(
         color2: "#ffa500",
         color3: "#ff0000",
         Position: positions,
-        H_Offset: 0,
+        H_Offset: 0.0,
         V_Offset: 0,
     };
 
@@ -262,14 +256,9 @@ function createGUI(
 
     // Add sliders to the GUI
     // Slider cases
-
-    if (adjustable_walls.back && adjustable_walls.front) {
-        console.log("back and front: Pinch Vertically Slider");
-        console.log("and vertical position slider");
-    }
+    // Increase Depth of Rear Block
     if (adjustable_walls.back && !adjustable_walls.front) {
         console.log("back only: Depth Slider to Rear");
-        console.log("depths:", min_depth, max_pd_d, max_pp_d);
         gui.add(cubeDimensions, "Depth", min_depth, max_pp_d + 0.5).onChange(
             (Depth) =>
                 CubeUpdater.updateCubeDepth(
@@ -283,32 +272,11 @@ function createGUI(
                 )
         );
     }
+    // Increase Depth of Front Block
     if (!adjustable_walls.back && adjustable_walls.front) {
         console.log("front only: Depth Slider to Front");
     }
-    if (adjustable_walls.left && adjustable_walls.right) {
-        console.log("left and right: Pinch Horizontally Slider");
-        gui.add(cubeDimensions, "Width", house_width / 2, house_width).onChange(
-            (Width) =>
-                CubeUpdater.updateCubeWidthSqueeze(
-                    cube,
-                    { ...cubeDimensions, Width },
-                    initialPosition,
-                    boundary,
-                    min_depth
-                )
-        );
-        console.log("and horizontal position slider");
-        gui.add(cubeDimensions, "H_Offset", 0.01, house_width / 2.0).onChange(
-            (H_Offset) =>
-                CubeUpdater.updateCubeWidthSlider(
-                    cube,
-                    { ...cubeDimensions, H_Offset },
-                    initialPosition,
-                    boundary
-                )
-        );
-    }
+    // Increase Width of Side Block (Left)
     if (adjustable_walls.left && !adjustable_walls.right) {
         console.log("left only: Width Slider to Left");
 
@@ -326,6 +294,7 @@ function createGUI(
                 )
         );
     }
+    // Increase Width of Side Block (Right)
     if (!adjustable_walls.left && adjustable_walls.right) {
         console.log("right only: Width Slider to Right");
 
@@ -343,56 +312,62 @@ function createGUI(
                 )
         );
     }
-
-    // if (adjustable_walls.back || adjustable_walls.front) {
-    //     gui.add(cubeDimensions, "Depth", 2, 7).onChange((Depth) =>
-    //         CubeUpdater.updateCubeDepth(
-    //             cube,
-    //             { ...cubeDimensions, Depth },
-    //             initialPosition,
-    //             ext_type,
-    //             adjustable_values,
-    //             adjustable_walls,
-    //             initialPositionsArray
-    //         )
-    //     );
-    // }
-    // if (adjustable_walls.left || adjustable_walls.right) {
-    //     gui.add(cubeDimensions, "Width", 3, 6.5).onChange((Width) =>
-    //         CubeUpdater.updateCubeWidth(
-    //             cube,
-    //             { ...cubeDimensions, Width },
-    //             initialPosition,
-    //             ext_type,
-    //             adjustable_values,
-    //             adjustable_walls,
-    //             initialPositionsArray
-    //         )
-    //     );
-    // }
-
-    // if (adjustable_walls.up) {
-    //     gui.add(cubeDimensions, "Height", 3, 6.5).onChange((Height) =>
-    //         CubeUpdater.updateCubeHeight(
-    //             cube,
-    //             { ...cubeDimensions, Height },
-    //             initialPosition,
-    //             ext_type,
-    //             adjustable_values,
-    //             adjustable_walls,
-    //             initialPositionsArray
-    //         )
-    //     );
-    // }
-    // gui.add(cubeDimensions, "Position", 3, 6.5).onChange((Position) =>
-    //     CubeUpdater.updateCubePosition(
-    //         cube,
-    //         { ...cubeDimensions, Position },
-    //         initialPosition,
-    //         ext_type,
-    //         adjustable_values,
-    //         adjustable_walls,
-    //         initialPositionsArray
-    //     )
-    // );
+    // Increase Height of Block
+    if (adjustable_walls.up) {
+        gui.add(cubeDimensions, "Height", min_height, max_pp_h + 0.25).onChange(
+            (Height) =>
+                CubeUpdater.updateCubeHeight(
+                    cube,
+                    { ...cubeDimensions, Height },
+                    initialPosition,
+                    min_height,
+                    max_pd_h,
+                    max_pp_h
+                )
+        );
+    }
+    // Squeeze and Move Rear Block
+    if (adjustable_walls.left && adjustable_walls.right) {
+        console.log("left and right: Pinch Horizontally Slider");
+        gui.add(cubeDimensions, "Width", house_width / 2, house_width).onChange(
+            (Width) =>
+                CubeUpdater.updateCubeWidthSqueeze(
+                    cube,
+                    { ...cubeDimensions, Width },
+                    initialPosition
+                )
+        );
+        console.log("and horizontal position slider");
+        gui.add(cubeDimensions, "H_Offset", 0.0, house_width / 2.0).onChange(
+            (H_Offset) =>
+                CubeUpdater.updateCubeWidthSlider(
+                    cube,
+                    { ...cubeDimensions, H_Offset },
+                    initialPosition,
+                    boundary
+                )
+        );
+    }
+    // Squeeze and Move Side Block
+    if (adjustable_walls.back && adjustable_walls.front) {
+        console.log("back and front: Pinch Vertically Slider");
+        gui.add(cubeDimensions, "Depth", house_depth / 2, house_depth).onChange(
+            (Depth) =>
+                CubeUpdater.updateCubeDepthSqueeze(
+                    cube,
+                    { ...cubeDimensions, Depth },
+                    initialPosition
+                )
+        );
+        console.log("and vertical position slider");
+        gui.add(cubeDimensions, "V_Offset", 0.0, house_depth / 2.0).onChange(
+            (V_Offset) =>
+                CubeUpdater.updateCubeDepthSlider(
+                    cube,
+                    { ...cubeDimensions, V_Offset },
+                    initialPosition,
+                    boundary
+                )
+        );
+    }
 }
