@@ -181,6 +181,9 @@ export default class CubeUpdater {
     ) {
         cube.geometry.dispose();
 
+        if (cubeDimensions.Height > max_pd_h) {
+            cubeDimensions.Height = max_pp_h;
+        }
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(
             cubeDimensions.Width,
@@ -195,7 +198,7 @@ export default class CubeUpdater {
         cube.position.x -= cubeDimensions.Width / 2.0;
         cube.position.y += cubeDimensions.Height / 2.0;
 
-        if (cubeDimensions.Height <= max_pd_h) {
+        if (cubeDimensions.Height < max_pd_h) {
             cube.material.color.set(cubeDimensions.color1);
         } else if (cubeDimensions.Height <= max_pp_h) {
             cube.material.color.set(cubeDimensions.color2);
@@ -203,30 +206,4 @@ export default class CubeUpdater {
             cube.material.color.set(cubeDimensions.color3);
         }
     }
-
-    // static updateCubePosition(cube, cubeDimensions, initialPosition) {
-    //     cube.geometry.dispose();
-
-    //     // create new geometry
-    //     let newGeometry = new THREE.BoxGeometry(
-    //         cubeDimensions.Width,
-    //         cubeDimensions.Height,
-    //         cubeDimensions.Depth
-    //     ); // adjust width and height as per your requirements
-    //     cube.geometry = newGeometry;
-    //     cube.position.copy(initialPosition);
-
-    //     // adjust cube's position so that front face stays at the same place
-    //     cube.position.z += cubeDimensions.Depth / 2.0;
-    //     cube.position.x -= cubeDimensions.Width / 2.0;
-    //     cube.position.y += cubeDimensions.Height / 2.0;
-
-    //     if (cubeDimensions.Height <= 2.8) {
-    //         cube.material.color.set(cubeDimensions.color1);
-    //     } else {
-    //         cube.material.color.set(cubeDimensions.color3);
-    //     }
-    // }
-
-    // add as many updateCube methods as you need...
 }

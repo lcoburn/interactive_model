@@ -5,6 +5,15 @@ import { JsonGeometryLoader } from "./JsonGeometryLoader.js";
 import { GUI } from "https://cdn.skypack.dev/dat.gui";
 import CubeUpdater from "./cubeupdaternew.js";
 
+// Set Local Authority
+const localAuthorityValue = houseInfo.localAuthority;
+
+// Select the element by its ID
+const localAuthorityElement = document.getElementById("local_authority");
+
+// Set the content dynamically
+localAuthorityElement.textContent = localAuthorityValue;
+
 // Event Listener for button click
 document.addEventListener("DOMContentLoaded", (event) => {
     loadModel();
@@ -128,6 +137,9 @@ function loadExtensions(scene, loader, house_width, house_depth) {
     let adjustableGeometries = adjustableCases[currentKey]["geometry"];
     var adjustable_values;
     var adjustable_walls;
+    let add_area = 0;
+    let cost = 0;
+    const bpsqm = houseInfo.bpsqm;
     // Variables for dimensions
     let count = 0;
 
@@ -138,10 +150,35 @@ function loadExtensions(scene, loader, house_width, house_depth) {
 
     adjustableGeometries.forEach((adjustableGeometry) => {
         let geometry = loader.createGeometry(adjustableGeometry);
+        // Create a material
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x00ff00,
+            opacity: 1,
+        });
+        // Create a mesh with the geometry and material
+        let cube = new THREE.Mesh(geometry, material);
+        add_area += calculateBaseArea(cube);
+    });
+
+    adjustableGeometries.forEach((adjustableGeometry) => {
+        let geometry = loader.createGeometry(adjustableGeometry);
         adjustable_values =
             adjustableCases[currentKey].geometry[count].adjustable_values;
         adjustable_walls =
             adjustableCases[currentKey].geometry[count].adjustable_walls;
+        let name = adjustableCases[currentKey].case[count];
+        if (name == "3" || name == "19") {
+            name = "Side Extension";
+        }
+        if (name == "4" || name == "5") {
+            name = "Rear Extension";
+        }
+        if (name == "1L" || name == "7L") {
+            name = "Hip to Gable Loft Conversion";
+        }
+        if (name == "4L") {
+            name = "Dormer Loft Conversion";
+        }
 
         // Create a material
         const material = new THREE.MeshStandardMaterial({
@@ -150,6 +187,7 @@ function loadExtensions(scene, loader, house_width, house_depth) {
         });
         // Create a mesh with the geometry and material
         let cube = new THREE.Mesh(geometry, material);
+
         // Add the mesh to the scene
         scene.add(cube);
         count += 1;
@@ -159,9 +197,13 @@ function loadExtensions(scene, loader, house_width, house_depth) {
             adjustable_values,
             adjustable_walls,
             house_width,
-            house_depth
+            house_depth,
+            name,
+            add_area,
+            bpsqm
         );
     });
+    updateAreaCostElements(add_area, bpsqm);
 }
 
 function createGUI(
@@ -170,7 +212,10 @@ function createGUI(
     adjustable_values,
     adjustable_walls,
     house_width,
-    house_depth
+    house_depth,
+    name,
+    add_area,
+    bpsqm
 ) {
     const elememt_id = "my-gui-container-".concat(count.toString());
     const gui_id = "gui-".concat(count.toString());
@@ -178,6 +223,13 @@ function createGUI(
     // Create a new GUI
     var gui = new GUI({ autoPlace: false });
     gui.domElement.id = gui_id;
+
+    // Create and prepend a title to the GUI element
+    var titleElement = document.createElement("div");
+    titleElement.className = "gui-title"; // You can style this class in your CSS
+    titleElement.textContent = name;
+    gui.domElement.prepend(titleElement);
+
     var customContainer = document.getElementById(elememt_id);
     customContainer.appendChild(gui.domElement);
 
@@ -211,27 +263,6 @@ function createGUI(
         izh: positions.array[13],
     };
 
-    // console.log("initialPositionsArray", positions.array);
-    // Print out the vertices
-    // console.log(
-    //     "ixl",
-    //     boundary.ixl,
-    //     "ixr",
-    //     boundary.ixr,
-    //     "iyb",
-    //     boundary.iyb,
-    //     "iyt",
-    //     boundary.iyt,
-    //     "izh",
-    //     boundary.izh
-    // );
-    // for (let i = 0; i < positions.count; i++) {
-    //     let x = positions.getX(i);
-    //     let y = positions.getY(i);
-    //     let z = positions.getZ(i);
-    //     console.log(`Vertex ${i}: X = ${x}, Y = ${y}, Z = ${z}`);
-    // }
-
     // Create an object for the cube's dimensions
     var cubeDimensions = {
         Width: width_box,
@@ -260,7 +291,10 @@ function createGUI(
     if (adjustable_walls.back && !adjustable_walls.front) {
         console.log("back only: Depth Slider to Rear");
         gui.add(cubeDimensions, "Depth", min_depth, max_pp_d + 0.5).onChange(
-            (Depth) =>
+            (Depth) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeDepth(
                     cube,
                     { ...cubeDimensions, Depth },
@@ -269,7 +303,17 @@ function createGUI(
                     min_depth,
                     max_pd_d,
                     max_pp_d
-                )
+                );
+
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
     }
     // Increase Depth of Front Block
@@ -281,7 +325,10 @@ function createGUI(
         console.log("left only: Width Slider to Left");
 
         gui.add(cubeDimensions, "Width", min_width, max_pp_w + 0.5).onChange(
-            (Width) =>
+            (Width) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeWidth(
                     cube,
                     { ...cubeDimensions, Width },
@@ -291,7 +338,16 @@ function createGUI(
                     max_pd_w,
                     max_pp_w,
                     1
-                )
+                );
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
     }
     // Increase Width of Side Block (Right)
@@ -299,7 +355,10 @@ function createGUI(
         console.log("right only: Width Slider to Right");
 
         gui.add(cubeDimensions, "Width", min_width, max_pp_w + 0.5).onChange(
-            (Width) =>
+            (Width) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeWidth(
                     cube,
                     { ...cubeDimensions, Width },
@@ -309,13 +368,25 @@ function createGUI(
                     max_pd_w,
                     max_pp_w,
                     -1
-                )
+                );
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
     }
     // Increase Height of Block
     if (adjustable_walls.up) {
-        gui.add(cubeDimensions, "Height", min_height, max_pp_h + 0.25).onChange(
-            (Height) =>
+        gui.add(cubeDimensions, "Height", min_height, max_pd_h + 0.5).onChange(
+            (Height) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeHeight(
                     cube,
                     { ...cubeDimensions, Height },
@@ -323,51 +394,131 @@ function createGUI(
                     min_height,
                     max_pd_h,
                     max_pp_h
-                )
+                );
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
     }
     // Squeeze and Move Rear Block
     if (adjustable_walls.left && adjustable_walls.right) {
         console.log("left and right: Pinch Horizontally Slider");
         gui.add(cubeDimensions, "Width", house_width / 2, house_width).onChange(
-            (Width) =>
+            (Width) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeWidthSqueeze(
                     cube,
                     { ...cubeDimensions, Width },
                     initialPosition
-                )
+                );
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
         console.log("and horizontal position slider");
         gui.add(cubeDimensions, "H_Offset", 0.0, house_width / 2.0).onChange(
-            (H_Offset) =>
+            (H_Offset) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeWidthSlider(
                     cube,
                     { ...cubeDimensions, H_Offset },
                     initialPosition,
                     boundary
-                )
+                );
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
     }
     // Squeeze and Move Side Block
     if (adjustable_walls.back && adjustable_walls.front) {
         console.log("back and front: Pinch Vertically Slider");
         gui.add(cubeDimensions, "Depth", house_depth / 2, house_depth).onChange(
-            (Depth) =>
+            (Depth) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeDepthSqueeze(
                     cube,
                     { ...cubeDimensions, Depth },
                     initialPosition
-                )
+                );
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
         console.log("and vertical position slider");
         gui.add(cubeDimensions, "V_Offset", 0.0, house_depth / 2.0).onChange(
-            (V_Offset) =>
+            (V_Offset) => {
+                // get old area
+                let oldArea = calculateBaseArea(cube);
+
                 CubeUpdater.updateCubeDepthSlider(
                     cube,
                     { ...cubeDimensions, V_Offset },
                     initialPosition,
                     boundary
-                )
+                );
+                // get new area
+                let newArea = calculateBaseArea(cube);
+
+                // update the total area
+                add_area -= oldArea;
+                add_area += newArea;
+
+                updateAreaCostElements(add_area, bpsqm);
+            }
         );
     }
+}
+
+function calculateBaseArea(cube) {
+    var box3 = new THREE.Box3().setFromObject(cube);
+    var size = new THREE.Vector3();
+    box3.getSize(size);
+    var area = size.x * size.z;
+    if (size.y > 5.0) {
+        area *= 2;
+    }
+    return area;
+}
+
+function roundToPrecision(number, precision) {
+    const factor = 1 / precision;
+    return Math.round(number * factor) / factor;
+}
+
+function updateAreaCostElements(add_area, bpsqm) {
+    const addAreaElement = document.getElementById("add_area");
+    addAreaElement.textContent = roundToPrecision(add_area, 0.1);
+    const costElement = document.getElementById("cost");
+    costElement.textContent = roundToPrecision(add_area * bpsqm, 1000);
 }

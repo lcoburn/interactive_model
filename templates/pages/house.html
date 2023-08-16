@@ -3,6 +3,13 @@
 <script type="module" src="/static/js/model_dynamic.js"></script>
 <link rel="stylesheet" href="/static/css/model_dynamic.css" />
 
+<style>
+    .small-superscript {
+        font-size: 70%; /* This makes it half its original size */
+        vertical-align: super; /* This ensures it remains in the superscript position */
+    }
+</style>
+
 <script>
     // Access specific properties within the data object
     var houseInfoStr = "{{ house_data.houseInfo|safe }}";
@@ -151,15 +158,6 @@
 </div>
 
 <div id="button-container"></div>
-<!-- <div class="model-box col-md-12 padding_0" id="model-container">
-    <canvas class="webgl"></canvas>
-    <nav class="model">
-        <ul class="model">
-            <div id="my-gui-container"></div>
-        </ul>
-    </nav>
-    <link rel="stylesheet" href="/static/css/model.css" />
-</div> -->
 
 <div class="container">
     <div class="model-box col-md-9 padding_0" id="model-container">
@@ -168,35 +166,58 @@
 
     <div class="side-box">
         <div class="top-content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque...
-            <!-- A truncated version of Lorem Ipsum. You can expand it as needed. -->
+            <b>Local Authority:</b>
+            <br />
+            <span id="local_authority"></span>
         </div>
+        <br />
+        <div class="middle-content">
+            <b>Additional Area:</b>
+            <br />
+            <span id="add_area"></span> m<span class="small-superscript"
+                >2</span
+            >
+        </div>
+        <br />
         <div class="bottom-content">
-            Lorem ipsum...
-            <!-- A shorter version of Lorem Ipsum for the bottom 20% section. -->
+            <b
+                >Approx Cost (based on £2000 per m<span
+                    class="small-superscript"
+                    >2</span
+                >):</b
+            >
+            <br />
+            £<span id="cost"></span>
         </div>
     </div>
+    <link rel="stylesheet" href="/static/css/model_dynamic.css" />
 </div>
 
 <div class="gui-containers">
     <div class="box">
         <nav class="model">
             <ul class="model">
-                <div id="my-gui-container-1"></div>
+                <div id="my-gui-container-1">
+                    <h1 id="gui-title"></h1>
+                </div>
             </ul>
         </nav>
     </div>
     <div class="box">
         <nav class="model">
             <ul class="model">
-                <div id="my-gui-container-2"></div>
+                <div id="my-gui-container-2">
+                    <h1 id="gui-title"></h1>
+                </div>
             </ul>
         </nav>
     </div>
     <div class="box">
         <nav class="model">
             <ul class="model">
-                <div id="my-gui-container-3"></div>
+                <div id="my-gui-container-3">
+                    <h1 id="gui-title"></h1>
+                </div>
             </ul>
         </nav>
     </div>
