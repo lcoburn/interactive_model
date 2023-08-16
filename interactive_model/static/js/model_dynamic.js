@@ -145,6 +145,9 @@ function loadExtensions(scene, loader, house_width, house_depth) {
     // Variables for dimensions
     let count = 0;
 
+    // clear text from extension dimensions
+    clearExtensionDimensions();
+
     // remove existing GUI;
     for (let i = 1; i < 4; i++) {
         document.getElementById(`my-gui-container-${i}`).innerHTML = "";
@@ -205,6 +208,7 @@ function loadExtensions(scene, loader, house_width, house_depth) {
             bpsqm
         );
         message = messageFromCubeColor(cube);
+        updateExtensionDimenions(name, count, cube);
     });
     updateAreaCostElements(add_area, bpsqm);
 }
@@ -318,6 +322,7 @@ function createGUI(
                 let cubeColor = cube.material.color.getHexString();
                 message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
     }
@@ -353,6 +358,7 @@ function createGUI(
 
                 message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
     }
@@ -384,6 +390,7 @@ function createGUI(
 
                 message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
     }
@@ -411,6 +418,7 @@ function createGUI(
                 message = messageFromCubeColor(cube);
 
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
     }
@@ -436,6 +444,7 @@ function createGUI(
                 message = messageFromCubeColor(cube);
 
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
         console.log("and horizontal position slider");
@@ -459,6 +468,7 @@ function createGUI(
 
                 message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
     }
@@ -484,6 +494,7 @@ function createGUI(
 
                 message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
         console.log("and vertical position slider");
@@ -507,6 +518,7 @@ function createGUI(
 
                 message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
+                updateExtensionDimenions(name, count, cube);
             }
         );
     }
@@ -524,8 +536,13 @@ function calculateBaseArea(cube) {
 }
 
 function roundToPrecision(number, precision) {
-    const factor = 1 / precision;
-    return Math.round(number * factor) / factor;
+    if (number < 100) {
+        const rounded = Math.round(number * (1 / precision)) / (1 / precision);
+        return Number.isInteger(rounded) ? rounded.toFixed(1) : rounded;
+    } else {
+        const factor = 1 / precision;
+        return Math.round(number * factor) / factor;
+    }
 }
 
 function updateAreaCostElements(add_area, bpsqm) {
@@ -537,6 +554,71 @@ function updateAreaCostElements(add_area, bpsqm) {
     messageElement.textContent = message;
     const warningElement = document.getElementById("warning");
     warningElement.textContent = warning;
+}
+
+function updateExtensionDimenions(name, count, cube) {
+    var box3 = new THREE.Box3().setFromObject(cube);
+    var size = new THREE.Vector3();
+    box3.getSize(size);
+
+    // Dimensions
+    var width_box = roundToPrecision(size.x, 0.1);
+    var height_box = roundToPrecision(size.y, 0.1);
+    var depth_box = roundToPrecision(size.z, 0.1);
+    // Example usage - replace with your own content
+    if (count == 1) {
+        // Create the HTML structure with the desired styles
+        const content1 = `
+<strong>${name}:</strong><br>
+<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m
+`;
+        const extension1Dims = document.querySelector(
+            ".extension-1-dimensions"
+        );
+        extension1Dims.innerHTML = content1;
+
+        if (content1.trim() === "") {
+            extension1Dims.style.display = "none";
+        } else {
+            extension1Dims.innerHTML = content1;
+        }
+    } else if (count == 2) {
+        const content2 = `
+<strong>${name}:</strong><br>
+<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m
+`;
+        const extension2Dims = document.querySelector(
+            ".extension-2-dimensions"
+        );
+        extension2Dims.innerHTML = content2;
+        if (content2.trim() === "") {
+            extension2Dims.style.display = "none";
+        } else {
+            extension2Dims.innerHTML = content2;
+        }
+    } else if (count == 3) {
+        const content3 = `
+<strong>${name}:</strong><br>
+<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m
+`;
+        const extension3Dims = document.querySelector(
+            ".extension-3-dimensions"
+        );
+        extension3Dims.innerHTML = content3;
+        if (content3.trim() === "") {
+            extension3Dims.style.display = "none";
+        } else {
+            extension3Dims.innerHTML = content3;
+        }
+    }
+}
+function clearExtensionDimensions() {
+    const extension1Dims = document.querySelector(".extension-1-dimensions");
+    const extension2Dims = document.querySelector(".extension-2-dimensions");
+    const extension3Dims = document.querySelector(".extension-3-dimensions");
+    extension1Dims.innerHTML = "";
+    extension2Dims.innerHTML = "";
+    extension3Dims.innerHTML = "";
 }
 
 function messageFromCubeColor(cube) {
