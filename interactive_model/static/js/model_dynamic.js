@@ -3,10 +3,9 @@ import { gsap } from "https://cdn.skypack.dev/gsap@3.9.1";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js";
 import { JsonGeometryLoader } from "./JsonGeometryLoader.js";
 import { GUI } from "https://cdn.skypack.dev/dat.gui";
-import CubeUpdater from "./cubeupdaternew.js";
+import CubeUpdater, { warning } from "./cubeupdaternew.js";
 
 let message = "Test";
-let warning = "No Warning";
 
 // Set Local Authority
 const localAuthorityValue = houseInfo.localAuthority;
@@ -330,7 +329,7 @@ function createGUI(
     if (adjustable_walls.left && !adjustable_walls.right) {
         console.log("left only: Width Slider to Left");
 
-        gui.add(cubeDimensions, "Width", min_width, max_pp_w + 0.5).onChange(
+        gui.add(cubeDimensions, "Width", min_width, max_pp_w + 5).onChange(
             (Width) => {
                 // get old area
                 let oldArea = calculateBaseArea(cube);

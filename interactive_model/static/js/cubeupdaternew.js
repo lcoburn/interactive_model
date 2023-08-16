@@ -1,5 +1,7 @@
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0";
 
+export let warning = "No Warning"; // Assuming it's a string.
+
 // CubeUpdater.js
 export default class CubeUpdater {
     static initialCube(cube, cubeDimensions, initialPosition) {
@@ -31,8 +33,6 @@ export default class CubeUpdater {
     ) {
         cube.geometry.dispose();
 
-        let resultMessage = "";
-
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(
             cubeDimensions.Width,
@@ -48,17 +48,11 @@ export default class CubeUpdater {
         cube.position.y += cubeDimensions.Height / 2.0;
         if (cubeDimensions.Depth <= max_pd_d) {
             cube.material.color.set(cubeDimensions.color1);
-            resultMessage = "Permissable under Permitted Development";
         } else if (cubeDimensions.Depth <= max_pp_d) {
             cube.material.color.set(cubeDimensions.color2);
-            resultMessage = "Permissable under Prior Approval";
         } else {
             cube.material.color.set(cubeDimensions.color3);
-            resultMessage = "Not Permissable";
         }
-        console.log(resultMessage);
-
-        return resultMessage;
     }
 
     static updateCubeWidth(
@@ -72,8 +66,6 @@ export default class CubeUpdater {
         sign
     ) {
         cube.geometry.dispose();
-
-        let resultMessage = "";
 
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(
@@ -92,16 +84,13 @@ export default class CubeUpdater {
         cube.position.y += cubeDimensions.Height / 2.0;
         if (cubeDimensions.Width <= max_pd_w) {
             cube.material.color.set(cubeDimensions.color1);
-            resultMessage = "Permissable under Permitted Development";
         } else if (cubeDimensions.Width <= max_pp_w) {
             cube.material.color.set(cubeDimensions.color2);
-            resultMessage = "Permissable under Prior Approval";
         } else {
             cube.material.color.set(cubeDimensions.color3);
-            resultMessage = "Not Permissable";
         }
-
-        return resultMessage;
+        // console.log("sitesGeometry[0]", sitesGeometry[0]);
+        // this.cubeVerticesInsidePolygon(cube, sitesGeometry[0]);
     }
 
     static updateCubeWidthSqueeze(cube, cubeDimensions, initialPosition) {
@@ -220,5 +209,67 @@ export default class CubeUpdater {
         } else {
             cube.material.color.set(cubeDimensions.color3);
         }
+    }
+
+    static checkPointInPolygon(point, polygon) {
+        let x = point[0],
+            y = point[1];
+        let inside = false;
+
+        // Assuming polygon is an array of 2xn where
+        // polygon[0] contains all x-coordinates and
+        // polygon[1] contains all y-coordinates of the polygon vertices
+        for (
+            let i = 0, j = polygon[0].length - 1;
+            i < polygon[0].length;
+            j = i++
+        ) {
+            let xi = polygon[0][i],
+                yi = polygon[1][i];
+            let xj = polygon[0][j],
+                yj = polygon[1][j];
+
+            let intersect =
+                yi > y !== yj > y &&
+                x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+            if (intersect) inside = !inside;
+        }
+
+        return inside;
+    }
+
+    static cubeVerticesInsidePolygon(cube, polygon) {
+        let vertices = []; // Array to store the vertices of the cube
+
+        // Assuming the cube's position is its center and it's aligned with the coordinate axes
+        let halfWidth = cube.geometry.parameters.width / 2;
+        let halfHeight = cube.geometry.parameters.height / 2;
+        let halfDepth = cube.geometry.parameters.depth / 2;
+
+        let x = cube.position.x;
+        let y = cube.position.y;
+        let z = cube.position.z;
+
+        // Assuming you're checking the cube in the xy-plane, so z-coordinate is ignored
+        vertices.push([x - halfWidth, y - halfHeight]); // bottom-left
+        vertices.push([x + halfWidth, y - halfHeight]); // bottom-right
+        vertices.push([x + halfWidth, y + halfHeight]); // top-right
+        vertices.push([x - halfWidth, y + halfHeight]); // top-left
+        // You can add the other 4 vertices if you're checking against a 3D polygon
+
+        var isInside = true;
+        for (let vertex of vertices) {
+            if (!this.checkPointInPolygon(vertex, polygon)) {
+                isInside = false; // If any vertex is outside the polygon, return false
+            }
+        }
+
+        if (isInside) {
+            globalMessage = "No warning";
+        } else {
+            globalMessage = "Out of bounds";
+        }
+
+        return globalMessage;
     }
 }
