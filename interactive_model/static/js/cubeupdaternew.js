@@ -31,6 +31,8 @@ export default class CubeUpdater {
     ) {
         cube.geometry.dispose();
 
+        let resultMessage = "";
+
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(
             cubeDimensions.Width,
@@ -46,11 +48,17 @@ export default class CubeUpdater {
         cube.position.y += cubeDimensions.Height / 2.0;
         if (cubeDimensions.Depth <= max_pd_d) {
             cube.material.color.set(cubeDimensions.color1);
+            resultMessage = "Permissable under Permitted Development";
         } else if (cubeDimensions.Depth <= max_pp_d) {
             cube.material.color.set(cubeDimensions.color2);
+            resultMessage = "Permissable under Prior Approval";
         } else {
             cube.material.color.set(cubeDimensions.color3);
+            resultMessage = "Not Permissable";
         }
+        console.log(resultMessage);
+
+        return resultMessage;
     }
 
     static updateCubeWidth(
@@ -64,6 +72,8 @@ export default class CubeUpdater {
         sign
     ) {
         cube.geometry.dispose();
+
+        let resultMessage = "";
 
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(
@@ -82,11 +92,16 @@ export default class CubeUpdater {
         cube.position.y += cubeDimensions.Height / 2.0;
         if (cubeDimensions.Width <= max_pd_w) {
             cube.material.color.set(cubeDimensions.color1);
+            resultMessage = "Permissable under Permitted Development";
         } else if (cubeDimensions.Width <= max_pp_w) {
             cube.material.color.set(cubeDimensions.color2);
+            resultMessage = "Permissable under Prior Approval";
         } else {
             cube.material.color.set(cubeDimensions.color3);
+            resultMessage = "Not Permissable";
         }
+
+        return resultMessage;
     }
 
     static updateCubeWidthSqueeze(cube, cubeDimensions, initialPosition) {

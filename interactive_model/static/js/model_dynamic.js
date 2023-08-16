@@ -5,6 +5,9 @@ import { JsonGeometryLoader } from "./JsonGeometryLoader.js";
 import { GUI } from "https://cdn.skypack.dev/dat.gui";
 import CubeUpdater from "./cubeupdaternew.js";
 
+let message = "Test";
+let warning = "No Warning";
+
 // Set Local Authority
 const localAuthorityValue = houseInfo.localAuthority;
 
@@ -202,6 +205,7 @@ function loadExtensions(scene, loader, house_width, house_depth) {
             add_area,
             bpsqm
         );
+        message = messageFromCubeColor(cube);
     });
     updateAreaCostElements(add_area, bpsqm);
 }
@@ -304,7 +308,7 @@ function createGUI(
                     max_pd_d,
                     max_pp_d
                 );
-
+                console.log(">", message);
                 // get new area
                 let newArea = calculateBaseArea(cube);
 
@@ -312,6 +316,8 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
+                let cubeColor = cube.material.color.getHexString();
+                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
             }
         );
@@ -346,6 +352,7 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
+                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
             }
         );
@@ -376,6 +383,7 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
+                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
             }
         );
@@ -401,6 +409,7 @@ function createGUI(
                 // update the total area
                 add_area -= oldArea;
                 add_area += newArea;
+                message = messageFromCubeColor(cube);
 
                 updateAreaCostElements(add_area, bpsqm);
             }
@@ -425,6 +434,7 @@ function createGUI(
                 // update the total area
                 add_area -= oldArea;
                 add_area += newArea;
+                message = messageFromCubeColor(cube);
 
                 updateAreaCostElements(add_area, bpsqm);
             }
@@ -448,6 +458,7 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
+                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
             }
         );
@@ -472,6 +483,7 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
+                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
             }
         );
@@ -494,6 +506,7 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
+                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
             }
         );
@@ -521,4 +534,29 @@ function updateAreaCostElements(add_area, bpsqm) {
     addAreaElement.textContent = roundToPrecision(add_area, 0.1);
     const costElement = document.getElementById("cost");
     costElement.textContent = roundToPrecision(add_area * bpsqm, 1000);
+    const messageElement = document.getElementById("message");
+    messageElement.textContent = message;
+    const warningElement = document.getElementById("warning");
+    warningElement.textContent = warning;
+}
+
+function messageFromCubeColor(cube) {
+    let cubeColor = cube.material.color.getHexString();
+
+    let message = "";
+
+    if (cubeColor === "00ff00") {
+        // Green color
+        message = "Permissable under Permitted Development";
+    } else if (cubeColor === "ffa500") {
+        // Orange color
+        message = "Permissable under Prior Approval";
+    } else if (cubeColor === "ff0000") {
+        // Red color
+        message = "Not Permissable";
+    } else {
+        message = "No message"; // Default or fallback message
+    }
+
+    return message;
 }
