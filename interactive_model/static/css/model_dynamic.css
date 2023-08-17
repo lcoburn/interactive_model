@@ -1,0 +1,277 @@
+/* nav.model {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    z-index: 2;
+    position: absolute;
+    padding: 2rem;
+    top: 0;
+} */
+
+/* nav a.model {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding-right: 15rem;
+} */
+
+/* nav ul.model {
+    list-style: none;
+    display: flex;
+    gap: 4rem;
+} */
+
+.container-fluid {
+    background-color: black;
+}
+
+.title {
+    z-index: 2;
+    position: absolute;
+    font-size: 3rem;
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%, -75%);
+}
+
+h4 {
+    margin: 20px 0; /* adjust as needed */
+}
+
+#gui {
+    /* position: absolute;
+    top: 2px;
+    left: 2px; */
+}
+.legend {
+    /* background-color: black; */
+    color: black;
+    /* border-radius: 10px; */
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 0px;
+    padding-right: 100px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.stick-line {
+    width: 40px;
+    height: 10px;
+    margin-right: 5px;
+}
+
+.green-line {
+    background-color: green;
+}
+
+.orange-line {
+    background-color: #ffa500;
+}
+
+.red-line {
+    background-color: red;
+}
+
+#my-gui-container-1 {
+    position: relative;
+}
+
+#my-gui-container-1 > div {
+    position: absolute;
+    top: 100;
+    right: 100;
+}
+.gui-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    background-color: #eee;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+    /* add any other styles as desired */
+}
+
+/* Style for the container holding the three gui-containers */
+/* .gui-containers {
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 100px; 
+} */
+
+/* Styling each .model container to take up equal width */
+.model {
+    margin-bottom: 30px; /* adjust as needed */
+    flex: 1; /* This ensures each .model takes up equal space */
+    margin: 0 5px; /* Gives a small gap between each container */
+    box-sizing: border-box; /* This ensures padding and borders are included in total width/height */
+}
+
+/* You can add more specific styles for the individual GUI containers if needed */
+#my-gui-container-1,
+#my-gui-container-2,
+#my-gui-container-3 {
+    /* Add any specific styles here if needed */
+}
+/* Container for the horizontal boxes */
+.horizontal-boxes {
+    display: flex; /* Flexbox layout */
+    justify-content: space-between; /* Space out the boxes */
+    margin-top: 20px; /* Space between the .model-box and the row of boxes. Adjust as needed */
+    flex-basis: 75%; /* It occupies 75% of the parent's width */
+    position: relative; /* So that we can align the canvas and model-box correctly */
+    width: 100%; /* You can adjust this as needed */
+}
+
+/* Style for each individual box */
+.box {
+    flex: 1; /* Makes each box take up an equal amount of space */
+    padding: 20px; /* Inner padding for each box. Adjust as needed */
+    border: 1px solid #ccc; /* A simple border. Adjust as needed */
+    box-sizing: border-box; /* Ensures padding and borders are included in total width/height */
+    text-align: center; /* Centers the content inside the box. Adjust as needed */
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100vw;
+}
+
+.main-box {
+    width: 75vw;
+    height: 37.5vw; /* half of the width */
+    border: 1px solid black;
+}
+
+/* .side-box {
+    width: 25vw;
+    height: 37.5vw;
+    border: 1px solid black;
+} */
+
+.small-box {
+    width: 25vw;
+    height: 25vw;
+    border: 1px solid black;
+}
+
+/* Container to hold the canvas and the side box */
+.container {
+    display: flex;
+    width: 100%;
+    height: 500px; /* Example height, change as required */
+}
+
+.model-box {
+    flex: 0 0 75%; /* It occupies 75% of the parent's width */
+    border: 1px solid #ccc;
+    padding: 0; /* Remove padding if any */
+    margin: 0; /* Remove margins to avoid space between boxes */
+}
+
+.webgl {
+    width: 100%;
+    height: 100%;
+    display: block; /* Block display to occupy full space of its container */
+}
+
+/* .side-box {
+    flex: 0 0 25%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    margin: 0;
+} */
+
+.top-content,
+.bottom-content {
+    padding: 10px;
+    overflow: auto;
+}
+
+.top-content {
+    flex: 4;
+    border-bottom: 1px solid #ccc;
+}
+
+.bottom-content {
+    flex: 1;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* .container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100vw;
+} */
+
+.main-box {
+    width: 75vw;
+    height: 37.5vw; /* half of the width */
+    border: 1px solid black;
+}
+
+/* .side-box {
+    width: 25vw;
+    height: 37.5vw;
+    border: 1px solid black;
+} */
+
+.small-box {
+    width: 25vw;
+    height: 25vw;
+    border: 1px solid black;
+}
+
+.extension-1-dimensions,
+.extension-2-dimensions,
+.extension-3-dimensions {
+    display: none;
+}
+
+.canvas-sliders-box {
+    padding: 10px; /* Adjust as needed */
+    background-color: #e5e5e5; /* Base color */
+
+    /* You can play around with these values to achieve the desired bevel depth and direction */
+    border: 1px solid #b0b0b0;
+    box-shadow: 2px 2px 4px #b0b0b0, -2px -2px 4px #fff;
+
+    /* Adding some border radius can enhance the bevelled look */
+    border-radius: 5px;
+
+    /* Optionally, you can also use a gradient background for more depth */
+    background: linear-gradient(135deg, #e5e5e5, #d0d0d0);
+}
+
+/* If you want to add interactivity, you can also add a hover effect */
+.canvas-sliders-box:hover {
+    background: linear-gradient(135deg, #d0d0d0, #e5e5e5);
+}
+
+/* Other existing styles continue here */
+
+@media (max-width: 414px) {
+}
