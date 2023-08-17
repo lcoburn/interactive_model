@@ -90,6 +90,15 @@ h4 {
     top: 100;
     right: 100;
 }
+
+.my-gui-container-container {
+    display: flex;
+}
+
+.my-gui-container {
+    width: 255px;
+}
+
 .gui-title {
     font-size: 16px;
     color: white;
