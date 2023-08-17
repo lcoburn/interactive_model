@@ -74,7 +74,7 @@ export function loadModel() {
     // Sizes
     const width = document.getElementById("model-container").clientWidth;
     const sizes = {
-        width: width,
+        width: width * 0.9,
         height: 0.5 * width,
     };
 

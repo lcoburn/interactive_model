@@ -131,129 +131,128 @@
 
 <script src="{% static 'djangojs/jquery.json.min.js' %}"></script>
 
-<script>
-    var accessKeyID = "{{ AWS_ACCESS_KEY_ID }}";
-    var secretAccessKey = "{{ AWS_SECRET_ACCESS_KEY }}";
-</script>
-
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.103.0.min.js"></script>
-
-<h5>
-    <span id="house-address">{{ house_data.houseInfo.address_string }}</span>
-</h5>
-<h6 class="sub-heading">
-    <b>Local Authority:</b> <span id="local_authority"></span>
-</h6>
-<br />
-
-<div class="legend">
-    <div class="legend-item">
-        <div class="stick-line green-line"></div>
-        <div>PD</div>
-    </div>
-    <div class="legend-item">
-        <div class="stick-line orange-line"></div>
-        <div>PP</div>
-    </div>
-    <div class="legend-item">
-        <div class="stick-line red-line"></div>
-        <div>Error</div>
-    </div>
-</div>
-
-<div id="button-container"></div>
-
-<div class="container">
-    <div class="model-box col-md-9 padding_0" id="model-container">
-        <canvas class="webgl"></canvas>
-    </div>
-
-    <div class="side-box">
-        <!-- <div class="side-box-content-1">
-            <b>Local Authority:</b>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>
+                <span id="house-address"
+                    >{{ house_data.houseInfo.address_string }}</span
+                >
+            </h5>
+            <h6 class="sub-heading">
+                <b>Local Authority:</b> <span id="local_authority"></span>
+            </h6>
             <br />
-            <span id="local_authority"></span>
-        </div> 
-        <br />-->
-        <h6><b>Details</b>:</h6>
-        <br />
-        <div class="side-box-content-2">
-            <b>Additional Area: </b><span id="add_area"></span> m<span
-                class="small-superscript"
-                >2</span
-            >
-        </div>
-        <div class="side-box-content-3">
-            <div class="extension-1-dimensions"></div>
-        </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="stick-line green-line"></div>
+                    <div>PD</div>
+                </div>
+                <div class="legend-item">
+                    <div class="stick-line orange-line"></div>
+                    <div>PP</div>
+                </div>
+                <div class="legend-item">
+                    <div class="stick-line red-line"></div>
+                    <div>Error</div>
+                </div>
+            </div>
+            <div id="button-container"></div>
+            <div class="row">
+                <div class="canvas-sliders-box">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="container">
+                                    <div
+                                        class="model-box padding_0 col-md-9"
+                                        id="model-container"
+                                    >
+                                        <canvas class="webgl"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <nav class="model">
+                                        <ul class="model">
+                                            <div id="my-gui-container-1"></div>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <nav class="model">
+                                        <ul class="model">
+                                            <div id="my-gui-container-2"></div>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <nav class="model">
+                                        <ul class="model">
+                                            <div id="my-gui-container-3"></div>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="side-box-content-4">
-            <div class="extension-2-dimensions"></div>
-        </div>
+                <div class="details-box col-md-3 padding_10">
+                    <div class="side-box padding_0 row">
+                        <div class="side-box-content-2">
+                            <b>Additional Area: </b
+                            ><span id="add_area"></span> m<span
+                                class="small-superscript"
+                                >2</span
+                            >
+                        </div>
+                        <div class="side-box-content-3">
+                            <div class="extension-1-dimensions"></div>
+                        </div>
 
-        <div class="side-box-content-5">
-            <div class="extension-3-dimensions"></div>
-        </div>
-        <br />
-        <div class="side-box-content-6">
-            <b
-                >Approx Cost (based on £2000 per m<span
-                    class="small-superscript"
-                    >2</span
-                >):</b
-            >
-            <br />
-            £<span id="cost"></span>
-        </div>
-        <br />
-        <div class="side-box-content-7">
-            <b>Message:</b>
-            <br />
-            <span id="message"></span>
-        </div>
-        <br />
-        <div class="side-box-content-8">
-            <b>Warning:</b>
-            <br />
-            <span id="warning"></span>
+                        <div class="side-box-content-4">
+                            <div class="extension-2-dimensions"></div>
+                        </div>
+
+                        <div class="side-box-content-5">
+                            <div class="extension-3-dimensions"></div>
+                        </div>
+                        <br />
+                        <div class="side-box-content-6">
+                            <b
+                                >Approx Cost (based on £2000 per m<span
+                                    class="small-superscript"
+                                    >2</span
+                                >):</b
+                            >
+                            <br />
+                            £<span id="cost"></span>
+                        </div>
+                        <br />
+                        <div class="side-box-content-7">
+                            <b>Message:</b>
+                            <br />
+                            <span id="message"></span>
+                        </div>
+                        <br />
+                        <div class="side-box-content-8">
+                            <b>Warning:</b>
+                            <br />
+                            <span id="warning"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <link rel="stylesheet" href="/static/css/model_dynamic.css" />
-</div>
-
-<div class="gui-containers">
-    <div class="box">
-        <nav class="model">
-            <ul class="model">
-                <div id="my-gui-container-1"></div>
-            </ul>
-        </nav>
-    </div>
-    <div class="box">
-        <nav class="model">
-            <ul class="model">
-                <div id="my-gui-container-2"></div>
-            </ul>
-        </nav>
-    </div>
-    <div class="box">
-        <nav class="model">
-            <ul class="model">
-                <div id="my-gui-container-3"></div>
-            </ul>
-        </nav>
-    </div>
-</div>
-
-<div class="container">
-    <!-- Main top section -->
-    <div class="main-box"></div>
-    <div class="side-box"></div>
-
-    <!-- 3 boxes below main section -->
-    <div class="small-box"></div>
-    <div class="small-box"></div>
-    <div class="small-box"></div>
 </div>
 
 {% endblock content %}
