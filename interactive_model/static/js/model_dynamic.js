@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     buttons.forEach((button) => {
         button.addEventListener("click", () => {
             loadModel();
+            buttons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
         });
     });
 });
@@ -74,8 +76,8 @@ export function loadModel() {
     // Sizes
     const width = document.getElementById("model-container").clientWidth;
     const sizes = {
-        width: width * 0.9,
-        height: 0.5 * width,
+        width: width,
+        height: 0.46 * width,
     };
 
     // Light
@@ -90,9 +92,9 @@ export function loadModel() {
         0.1,
         200
     );
-    camera.position.z = 20;
-    camera.position.x = 3;
-    camera.position.y = 10;
+    camera.position.z = 25;
+    camera.position.x = 4;
+    camera.position.y = 15;
     camera.lookAt(centreX, centreY, centreZ);
     scene.add(camera);
 
@@ -109,15 +111,14 @@ export function loadModel() {
     controls.update();
     controls.enableDamping = true;
     controls.enablePan = false;
-    controls.enableZoom = false;
+    controls.enableZoom = true;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 5;
 
     // Resize
     window.addEventListener("resize", () => {
         // Update Sizes
-        const newWidth =
-            document.getElementById("model-container").clientWidth - 30;
+        const newWidth = document.getElementById("model-container").clientWidth;
         (sizes.width = newWidth),
             (sizes.height = 0.5 * newWidth),
             // Update Camera
@@ -552,8 +553,8 @@ function updateAreaCostElements(add_area, bpsqm) {
     costElement.textContent = roundToPrecision(add_area * bpsqm, 1000);
     const messageElement = document.getElementById("message");
     messageElement.textContent = message;
-    const warningElement = document.getElementById("warning");
-    warningElement.textContent = warning;
+    // const warningElement = document.getElementById("warning");
+    // warningElement.textContent = warning;
 }
 
 function updateExtensionDimenions(name, count, cube) {

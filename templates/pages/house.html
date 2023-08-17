@@ -114,6 +114,10 @@
             btn.id = key;
             btn.classList.add("load-model-btn");
 
+            if (key === "case1") {
+                btn.classList.add("active");
+            }
+
             // Add an event listener to the button
             btn.addEventListener("click", function () {
                 // Store the data in the Map with the button's key as the map key
@@ -134,79 +138,66 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <h5>
-                <span id="house-address"
-                    >{{ house_data.houseInfo.address_string }}</span
-                >
-            </h5>
-            <h6 class="sub-heading">
-                <b>Local Authority:</b> <span id="local_authority"></span>
+            <h4>Interactive Model of Possible Extensions</h4>
+            <h6>
+                Address:
+                <i
+                    ><span id="house-address"
+                        >{{ house_data.houseInfo.address_string }}</span
+                    ></i
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <b>Local Authority:</b>
+                <i><span id="local_authority"></span></i>
             </h6>
+            <h6 class="sub-heading"></h6>
             <br />
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="stick-line green-line"></div>
-                    <div>PD</div>
-                </div>
-                <div class="legend-item">
-                    <div class="stick-line orange-line"></div>
-                    <div>PP</div>
-                </div>
-                <div class="legend-item">
-                    <div class="stick-line red-line"></div>
-                    <div>Error</div>
-                </div>
-            </div>
+
             <div id="button-container"></div>
             <div class="row">
-                <div class="canvas-sliders-box">
-                    <div class="col-md-9">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="container">
-                                    <div
-                                        class="model-box padding_0 col-md-9"
-                                        id="model-container"
-                                    >
-                                        <canvas class="webgl"></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="model-box" id="model-container">
+                            <canvas class="webgl"></canvas>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="box">
-                                    <nav class="model">
-                                        <ul class="model">
-                                            <div id="my-gui-container-1"></div>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="box">
-                                    <nav class="model">
-                                        <ul class="model">
-                                            <div id="my-gui-container-2"></div>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="box">
-                                    <nav class="model">
-                                        <ul class="model">
-                                            <div id="my-gui-container-3"></div>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div id="my-gui-container-1"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="my-gui-container-2"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="my-gui-container-3"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="details-box col-md-3 padding_10">
-                    <div class="side-box padding_0 row">
+                    <div class="side-box row">
+                        <h6><u>Details</u></h6>
+
+                        <div class="instructions">
+                            <i
+                                >Use the sliders below to try out different
+                                possibilities for extending this home</i
+                            >
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <div class="stick-line green-line"></div>
+                                    <div>Permitted Development</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="stick-line orange-line"></div>
+                                    <div>Planning Permission</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="stick-line red-line"></div>
+                                    <div>Not Permissable</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
                         <div class="side-box-content-2">
                             <b>Additional Area: </b
                             ><span id="add_area"></span> m<span
@@ -214,6 +205,7 @@
                                 >2</span
                             >
                         </div>
+                        <br />
                         <div class="side-box-content-3">
                             <div class="extension-1-dimensions"></div>
                         </div>
@@ -243,11 +235,11 @@
                             <span id="message"></span>
                         </div>
                         <br />
-                        <div class="side-box-content-8">
+                        <!-- <div class="side-box-content-8">
                             <b>Warning:</b>
                             <br />
                             <span id="warning"></span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
