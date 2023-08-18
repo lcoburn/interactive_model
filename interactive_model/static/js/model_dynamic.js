@@ -151,7 +151,9 @@ function loadExtensions(scene, loader, house_width, house_depth) {
 
     // remove existing GUI;
     for (let i = 1; i < 4; i++) {
-        document.getElementById(`my-gui-container-${i}`).innerHTML = "";
+        if (document.getElementById(`my-gui-container-${i}`)) {
+            document.getElementById(`my-gui-container-${i}`).innerHTML = "";
+        }
     }
 
     adjustableGeometries.forEach((adjustableGeometry) => {
@@ -231,11 +233,6 @@ function createGUI(
     // Create a new GUI
     var gui = new GUI({ autoPlace: false });
     gui.domElement.id = gui_id;
-
-    if (window.innerWidth < 700) {
-        // gui.close();
-        console.log("hier");
-    }
 
     // Create and prepend a title to the GUI element
     var titleElement = document.createElement("div");
