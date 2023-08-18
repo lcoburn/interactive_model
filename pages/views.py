@@ -11,7 +11,7 @@ def download_json(request, data_id):
         return render(request, 'pages/404.html')
     if request.META['HTTP_USER_AGENT'].find("Mobile") > -1:
         print('mobile')
-        return render(request, 'pages/house.html', { 'house_data': data['data'] })    
+        return render(request, 'pages/house_mobile.html', { 'house_data': data['data'] })    
     else:
         print('pc')
-        return render(request, 'pages/house_mobile.html', { 'house_data': data['data'] })
+        return render(request, 'pages/house.html', { 'house_data': data['data'] })
