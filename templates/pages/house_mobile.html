@@ -96,19 +96,15 @@
     console.log("footprint_area", footprint_area, house_width * house_depth);
 
     document.addEventListener("DOMContentLoaded", function (event) {
-        // Check if we are on mobile or on desktop page
-        var element = document.getElementById("model-container-mobile");
-        var buttonContainerStr = "button-container";
-        if (element) {
-            buttonContainerStr = "button-container-mobile";
-        }
         // Create a Map to store the data associated with each button
         let dataMap = new Map();
         // Get the keys from the dictionary
         const keys = Object.keys(adjustableCases);
 
         // Get the container where you want to add the buttons
-        const buttonContainer = document.getElementById(buttonContainerStr);
+        const buttonContainer = document.getElementById(
+            "button-container-mobile"
+        );
 
         // Iterate over the keys
         keys.forEach((key) => {
@@ -144,22 +140,24 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <h4>Interactive Model of Possible Extensions</h4>
-            <h6>
-                Address:
-                <i
-                    ><span id="house-address"
-                        >{{ house_data.houseInfo.address_string }}</span
-                    ></i
-                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <h6>Interactive Model of Possible Extensions</h6>
+            <h8
+                ><span id="house-address"
+                    >{{ house_data.houseInfo.address_string }}</span
+                >
+            </h8>
+            <h8>
                 <b>Local Authority:</b>
                 <i><span id="local_authority"></span></i>
-            </h6>
-            <h6 class="sub-heading"></h6>
+            </h8>
+            <!-- <h6 class="sub-heading"></h6> -->
             <br />
+            <div class="model-box-mobile" id="model-container">
+                <canvas class="webgl-mobile"></canvas>
+            </div>
 
-            <div id="button-container"></div>
-            <div class="row">
+            <div id="button-container-mobile"></div>
+            <!-- <div class="row">
                 <div class="col-md-9">
                     <div class="row">
                         <div class="model-box" id="model-container">
@@ -167,7 +165,7 @@
                         </div>
                     </div>
                     <div class="row my-gui-container-container">
-                        <!-- <div class="col-md-4"> -->
+                        
                         <div
                             id="my-gui-container-1"
                             class="my-gui-container"
@@ -176,10 +174,6 @@
                             id="my-gui-container-2"
                             class="my-gui-container"
                         ></div>
-                        <!-- </div> -->
-                        <!-- <div class="col-md-4">
-                            <div id="my-gui-container-2"></div>
-                        </div> -->
                         <div class="col-md-4">
                             <div id="my-gui-container-3"></div>
                         </div>
@@ -248,14 +242,9 @@
                             <span id="message"></span>
                         </div>
                         <br />
-                        <!-- <div class="side-box-content-8">
-                            <b>Warning:</b>
-                            <br />
-                            <span id="warning"></span>
-                        </div> -->
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

@@ -9,4 +9,7 @@ def download_json(request, data_id):
     data = AuctioneerData.get_auctioneer_data(data_id)
     if data is None:
         return render(request, 'pages/404.html')
-    return render(request, 'pages/house.html', { 'house_data': data['data'] })
+    if request.META['HTTP_USER_AGENT'].find("Mobile") > -1:
+        return render(request, 'pages/house_mobile.html', { 'house_data': data['data'] })    
+    else:
+        return render(request, 'pages/house.html', { 'house_data': data['data'] })

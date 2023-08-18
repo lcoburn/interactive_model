@@ -190,6 +190,15 @@ html {
     margin: 0; /* Remove margins to avoid space between boxes */
     margin-left: 1rem;
 }
+
+.model-box-mobile {
+    flex: 0 0 75%; /* It occupies 75% of the parent's width */
+    border: 5px solid #eee;
+    border-radius: 5px;
+    padding: 0; /* Remove padding if any */
+    margin: 0; /* Remove margins to avoid space between boxes */
+    margin-left: 1rem;
+}
 .side-box {
     padding: inherit;
     border: 5px solid #eee;

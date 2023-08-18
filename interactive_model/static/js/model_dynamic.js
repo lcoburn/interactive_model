@@ -43,6 +43,15 @@ export function loadModel() {
     );
 
     geometries.forEach((geometryTemp, index) => {
+        // Check if we are in mobile or in regular view
+        var element = document.getElementById("model-container-mobile");
+        var containerString = "model-container";
+        var webglString = ".webgl";
+        if (element) {
+            containerString = "model-container-mobile";
+            webglString = ".webgl-mobile";
+        }
+
         const geometry = loader.createGeometry(geometryTemp);
         // Create a material
         const material = new THREE.MeshStandardMaterial({
@@ -74,7 +83,7 @@ export function loadModel() {
     loadExtensions(scene, loader, house_width, house_depth);
 
     // Sizes
-    const width = document.getElementById("model-container").clientWidth;
+    const width = document.getElementById(containerString).clientWidth;
     const sizes = {
         width: width,
         height: 0.46 * width,
@@ -99,7 +108,7 @@ export function loadModel() {
     scene.add(camera);
 
     // Renderer
-    const canvas = document.querySelector(".webgl");
+    const canvas = document.querySelector(webglString);
     const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(2);
@@ -118,7 +127,7 @@ export function loadModel() {
     // Resize
     window.addEventListener("resize", () => {
         // Update Sizes
-        const newWidth = document.getElementById("model-container").clientWidth;
+        const newWidth = document.getElementById(containerString).clientWidth;
         (sizes.width = newWidth),
             (sizes.height = 0.5 * newWidth),
             // Update Camera
