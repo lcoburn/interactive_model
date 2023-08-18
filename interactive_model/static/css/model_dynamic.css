@@ -206,6 +206,7 @@ html {
 }
 .details-box {
     padding: 5px;
+    width: 100%;
 }
 
 .load-model-btn {
