@@ -232,6 +232,11 @@ function createGUI(
     var gui = new GUI({ autoPlace: false });
     gui.domElement.id = gui_id;
 
+    if (window.innerWidth < 700) {
+        // gui.close();
+        console.log("hier");
+    }
+
     // Create and prepend a title to the GUI element
     var titleElement = document.createElement("div");
     titleElement.className = "gui-title"; // You can style this class in your CSS

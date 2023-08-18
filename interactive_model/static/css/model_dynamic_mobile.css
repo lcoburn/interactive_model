@@ -93,11 +93,10 @@ h4 {
 
 .my-gui-container-container {
     display: flex;
-    flex-direction: column;
 }
 
 .my-gui-container {
-    height: 170px;
+    width: 255px;
 }
 
 .gui-title {
@@ -199,14 +198,6 @@ html {
     margin: 0;
     margin-left: 1rem;
 }
-.model-box,
-.side-box {
-    height: 540px; /* or whatever height you desire */
-    overflow-y: hidden; /* to handle content overflow */
-}
-.details-box {
-    padding: 5px;
-}
 
 .load-model-btn {
     color: black;
@@ -219,10 +210,6 @@ html {
 .active {
     border-color: #ccc;
     background-color: #eee;
-}
-
-.close-button {
-    display: none;
 }
 
 .webgl {
