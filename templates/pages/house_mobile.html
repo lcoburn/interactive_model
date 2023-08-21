@@ -133,12 +133,11 @@
     });
 </script>
 
-<script src="{% static 'djangojs/jquery.json.min.js' %}"></script>
+<!-- <script src="{% static 'djangojs/jquery.json.min.js' %}"></script> -->
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <!-- <h6>Interactive Model</h6> -->
             <h8>
                 <span id="house-address"
                     >{{ house_data.houseInfo.address_string }}</span
@@ -157,15 +156,62 @@
                             <canvas class="webgl"></canvas>
                         </div>
                     </div>
-                    <div class="row my-gui-container-container">
+
+                    <div class="fixed-width-height-div">
                         <div
-                            id="my-gui-container-1"
-                            class="my-gui-container"
-                        ></div>
-                        <div
-                            id="my-gui-container-2"
-                            class="my-gui-container"
-                        ></div>
+                            id="general-container-efc"
+                            class="general-container-efc"
+                        >
+                            <!-- <input
+                                class="radio-efc"
+                                type="radio"
+                                name="card"
+                                id="card-1"
+                                checked
+                            />
+                            <label class="content-efc" for="card-1">
+                                <div
+                                    id="my-gui-container-1"
+                                    class="my-gui-container"
+                                ></div>
+                                <h3
+                                    id="title-card-1"
+                                    class="card-title-efc"
+                                ></h3>
+                            </label>
+                            <input
+                                class="radio-efc"
+                                type="radio"
+                                name="card"
+                                id="card-2"
+                            />
+                            <label class="content-efc" for="card-2">
+                                <div
+                                    id="my-gui-container-2"
+                                    class="my-gui-container"
+                                ></div>
+                                <h3
+                                    id="title-card-2"
+                                    class="card-title-efc"
+                                ></h3>
+                            </label>
+                            <input
+                                class="radio-efc"
+                                type="radio"
+                                name="card"
+                                id="card-3"
+                            />
+                            <label class="content-efc" for="card-3">
+                                <h3
+                                    id="title-card-3"
+                                    class="card-title-efc"
+                                ></h3>
+                                <div
+                                    id="my-gui-container-3"
+                                    class="my-gui-container"
+                                ></div>
+                            </label> -->
+                        </div>
                     </div>
                 </div>
                 <div class="details-box col-md-3 padding_10">

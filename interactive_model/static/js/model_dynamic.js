@@ -90,7 +90,7 @@ export function loadModel() {
         45,
         sizes.width / sizes.height,
         0.1,
-        200
+        2000
     );
     camera.position.z = 25;
     camera.position.x = 4;
@@ -112,7 +112,7 @@ export function loadModel() {
     controls.enableDamping = true;
     controls.enablePan = false;
     controls.enableZoom = true;
-    controls.autoRotate = true;
+    controls.autoRotate = false;
     controls.autoRotateSpeed = 5;
 
     // Resize
@@ -150,11 +150,7 @@ function loadExtensions(scene, loader, house_width, house_depth) {
     clearExtensionDimensions();
 
     // remove existing GUI;
-    for (let i = 1; i < 4; i++) {
-        if (document.getElementById(`my-gui-container-${i}`)) {
-            document.getElementById(`my-gui-container-${i}`).innerHTML = "";
-        }
-    }
+    document.getElementById("general-container-efc").innerHTML = "";
 
     adjustableGeometries.forEach((adjustableGeometry) => {
         let geometry = loader.createGeometry(adjustableGeometry);
@@ -176,16 +172,16 @@ function loadExtensions(scene, loader, house_width, house_depth) {
             adjustableCases[currentKey].geometry[count].adjustable_walls;
         let name = adjustableCases[currentKey].case[count];
         if (name == "3" || name == "19") {
-            name = "Side Extension";
+            name = "Side";
         }
         if (name == "4" || name == "5") {
-            name = "Rear Extension";
+            name = "Rear";
         }
         if (name == "1L" || name == "7L") {
-            name = "Hip to Gable Loft Conversion";
+            name = "Hip to Gable";
         }
         if (name == "4L") {
-            name = "Dormer Loft Conversion";
+            name = "Loft";
         }
 
         // Create a material
@@ -229,16 +225,61 @@ function createGUI(
 ) {
     const elememt_id = "my-gui-container-".concat(count.toString());
     const gui_id = "gui-".concat(count.toString());
+    const title_id = "title-card-".concat(count.toString());
+
+    // Create a card for the new GUI
+    var inputElement = document.createElement("input");
+    inputElement.setAttribute("class", "radio-efc");
+    inputElement.setAttribute("type", "radio");
+    inputElement.setAttribute("name", "card");
+    inputElement.setAttribute("id", `card-${count}`);
+
+    var labelElement = document.createElement("label");
+    labelElement.setAttribute("class", "content-efc");
+    labelElement.setAttribute("for", `card-${count}`);
+
+    var h3Element = document.createElement("h3");
+    h3Element.setAttribute("id", `title-card-${count}`);
+    h3Element.setAttribute("class", "card-title-efc");
+
+    var divElement = document.createElement("div");
+    divElement.setAttribute("id", `my-gui-container-${count}`);
+    divElement.setAttribute("class", "my-gui-container");
+
+    labelElement.appendChild(h3Element);
+    labelElement.appendChild(divElement);
+
+    var containerElement = document.getElementById("general-container-efc");
+    containerElement.appendChild(inputElement);
+    containerElement.appendChild(labelElement);
+
+    if (count == 1) {
+        inputElement.setAttribute("checked", "checked");
+    }
 
     // Create a new GUI
     var gui = new GUI({ autoPlace: false });
     gui.domElement.id = gui_id;
 
-    // Create and prepend a title to the GUI element
-    var titleElement = document.createElement("div");
-    titleElement.className = "gui-title"; // You can style this class in your CSS
-    titleElement.textContent = name;
-    gui.domElement.prepend(titleElement);
+    document.getElementById(title_id).innerHTML = name;
+
+    const buttons = document.querySelectorAll(".extension-btn");
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const allGuis = document.querySelectorAll(`[id^="gui"]`);
+            allGuis.forEach((gui) => (gui.style = "display: none"));
+
+            const id = button.id;
+            const gui = document.getElementById("gui-" + id);
+            gui.style = "display:block";
+
+            buttons.forEach((btn) => {
+                // gui.close();
+                btn.classList.remove("active");
+            });
+            button.classList.add("active");
+        });
+    });
 
     var customContainer = document.getElementById(elememt_id);
     customContainer.appendChild(gui.domElement);
