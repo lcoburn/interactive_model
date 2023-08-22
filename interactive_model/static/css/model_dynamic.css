@@ -25,6 +25,14 @@
     background-color: black;
     width: 90%;
 }
+.logo {
+    position: absolute;
+    top: 10px; /* Adjust as necessary */
+    right: 0px; /* Adjust as necessary */
+    width: 60px; /* Set to desired width */
+    height: auto; /* Keep the logo's aspect ratio */
+    z-index: 1000; /* Ensure the logo is on top */
+}
 
 .title {
     z-index: 2;
@@ -79,6 +87,10 @@ h4 {
 
 .red-line {
     background-color: red;
+}
+
+.close-button {
+    display: none;
 }
 
 #my-gui-container-1 {
@@ -219,10 +231,6 @@ html {
 .active {
     border-color: #ccc;
     background-color: #eee;
-}
-
-.close-button {
-    display: none;
 }
 
 .webgl {

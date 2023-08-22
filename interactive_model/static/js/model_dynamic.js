@@ -3,7 +3,7 @@ import { gsap } from "https://cdn.skypack.dev/gsap@3.9.1";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js";
 import { JsonGeometryLoader } from "./JsonGeometryLoader.js";
 import { GUI } from "https://cdn.skypack.dev/dat.gui";
-import CubeUpdater, { warning } from "./cubeupdaternew.js";
+import CubeUpdater from "./cubeupdaternew.js";
 
 let message = "Test";
 
@@ -42,7 +42,7 @@ export function loadModel() {
         housesGeometry.Right
     );
 
-    geometries.forEach((geometryTemp, index) => {
+    geometries.forEach((geometryTemp) => {
         const geometry = loader.createGeometry(geometryTemp);
         // Create a material
         const material = new THREE.MeshStandardMaterial({
@@ -171,17 +171,22 @@ function loadExtensions(scene, loader, house_width, house_depth) {
         adjustable_walls =
             adjustableCases[currentKey].geometry[count].adjustable_walls;
         let name = adjustableCases[currentKey].case[count];
+        let long_name = "";
         if (name == "3" || name == "19") {
             name = "Side";
+            long_name = "Side Extension";
         }
         if (name == "4" || name == "5") {
             name = "Rear";
+            long_name = "Rear Extension";
         }
         if (name == "1L" || name == "7L") {
             name = "Hip to Gable";
+            long_name = "Hip to Gable Loft Conversion";
         }
         if (name == "4L") {
             name = "Loft";
+            long_name = "Loft Conversion";
         }
 
         // Create a material
@@ -203,11 +208,11 @@ function loadExtensions(scene, loader, house_width, house_depth) {
             house_width,
             house_depth,
             name,
+            long_name,
             add_area,
             bpsqm
         );
-        message = messageFromCubeColor(cube);
-        updateExtensionDimenions(name, count, cube);
+        updateExtensionDimenions(long_name, count, cube);
     });
     updateAreaCostElements(add_area, bpsqm);
 }
@@ -220,6 +225,7 @@ function createGUI(
     house_width,
     house_depth,
     name,
+    long_name,
     add_area,
     bpsqm
 ) {
@@ -355,7 +361,6 @@ function createGUI(
                     max_pd_d,
                     max_pp_d
                 );
-                console.log(">", message);
                 // get new area
                 let newArea = calculateBaseArea(cube);
 
@@ -363,10 +368,8 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
-                let cubeColor = cube.material.color.getHexString();
-                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
     }
@@ -383,7 +386,7 @@ function createGUI(
                 // get old area
                 let oldArea = calculateBaseArea(cube);
 
-                CubeUpdater.updateCubeWidth(
+                message = CubeUpdater.updateCubeWidth(
                     cube,
                     { ...cubeDimensions, Width },
                     initialPosition,
@@ -400,9 +403,8 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
-                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
     }
@@ -415,7 +417,7 @@ function createGUI(
                 // get old area
                 let oldArea = calculateBaseArea(cube);
 
-                CubeUpdater.updateCubeWidth(
+                message = CubeUpdater.updateCubeWidth(
                     cube,
                     { ...cubeDimensions, Width },
                     initialPosition,
@@ -432,9 +434,8 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
-                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
     }
@@ -459,10 +460,9 @@ function createGUI(
                 // update the total area
                 add_area -= oldArea;
                 add_area += newArea;
-                message = messageFromCubeColor(cube);
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
     }
@@ -485,10 +485,9 @@ function createGUI(
                 // update the total area
                 add_area -= oldArea;
                 add_area += newArea;
-                message = messageFromCubeColor(cube);
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
         console.log("and horizontal position slider");
@@ -510,9 +509,8 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
-                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
     }
@@ -536,9 +534,8 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
-                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
         console.log("and vertical position slider");
@@ -560,9 +557,8 @@ function createGUI(
                 add_area -= oldArea;
                 add_area += newArea;
 
-                message = messageFromCubeColor(cube);
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(name, count, cube);
+                updateExtensionDimenions(long_name, count, cube);
             }
         );
     }
@@ -673,23 +669,23 @@ function clearExtensionDimensions() {
     extension3Dims.innerHTML = "";
 }
 
-function messageFromCubeColor(cube) {
-    let cubeColor = cube.material.color.getHexString();
+// function messageFromCubeColor(cube) {
+//     let cubeColor = cube.material.color.getHexString();
 
-    let message = "";
+//     let message = "";
 
-    if (cubeColor === "00ff00") {
-        // Green color
-        message = "Permissable under Permitted Development";
-    } else if (cubeColor === "ffa500") {
-        // Orange color
-        message = "Permissable under Prior Approval";
-    } else if (cubeColor === "ff0000") {
-        // Red color
-        message = "Not Permissable";
-    } else {
-        message = "No message"; // Default or fallback message
-    }
+//     if (cubeColor === "00ff00") {
+//         // Green color
+//         message = "Permissable under Permitted Development";
+//     } else if (cubeColor === "ffa500") {
+//         // Orange color
+//         message = "Permissable under Prior Approval";
+//     } else if (cubeColor === "ff0000") {
+//         // Red color
+//         message = "Not Permissable";
+//     } else {
+//         message = "No message"; // Default or fallback message
+//     }
 
-    return message;
-}
+//     return message;
+// }

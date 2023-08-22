@@ -25,6 +25,14 @@
     background-color: black;
     width: 90%;
 }
+.logo {
+    position: absolute;
+    top: 10px; /* Adjust as necessary */
+    right: 0px; /* Adjust as necessary */
+    width: 60px; /* Set to desired width */
+    height: auto; /* Keep the logo's aspect ratio */
+    z-index: 1000; /* Ensure the logo is on top */
+}
 
 .title {
     z-index: 2;
@@ -233,23 +241,6 @@ html {
     background-color: #aaa;
     border-radius: 5px;
     padding: 8px;
-}
-
-:root {
-    --dark-blue: #1f4782;
-    --dark-gray: #303335;
-    --golden: #ab834c;
-    --golden-tainoi: #e9be71;
-    --gray: #818c96;
-    --white: #fff;
-}
-
-*,
-::after,
-::before {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 .fixed-width-height-div {

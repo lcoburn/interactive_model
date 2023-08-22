@@ -1,6 +1,6 @@
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0";
 
-export let warning = "No Warning"; // Assuming it's a string.
+export let message = "Permissable under PD";
 
 // CubeUpdater.js
 export default class CubeUpdater {
@@ -46,12 +46,13 @@ export default class CubeUpdater {
         cube.position.z += cubeDimensions.Depth / 2.0;
         cube.position.x -= cubeDimensions.Width / 2.0;
         cube.position.y += cubeDimensions.Height / 2.0;
-        if (cubeDimensions.Depth <= max_pd_d) {
-            cube.material.color.set(cubeDimensions.color1);
-        } else if (cubeDimensions.Depth <= max_pp_d) {
-            cube.material.color.set(cubeDimensions.color2);
-        } else {
+
+        // set color by checking rules
+        var break_rules = false;
+        if (break_rules) {
             cube.material.color.set(cubeDimensions.color3);
+        } else {
+            CubeUpdater.setColor(cube, cubeDimensions, max_pd_d, max_pp_d);
         }
     }
 
@@ -82,15 +83,15 @@ export default class CubeUpdater {
         cube.position.z += cubeDimensions.Depth / 2.0;
         cube.position.x += (sign * cubeDimensions.Width) / 2.0;
         cube.position.y += cubeDimensions.Height / 2.0;
-        if (cubeDimensions.Width <= max_pd_w) {
-            cube.material.color.set(cubeDimensions.color1);
-        } else if (cubeDimensions.Width <= max_pp_w) {
-            cube.material.color.set(cubeDimensions.color2);
-        } else {
-            cube.material.color.set(cubeDimensions.color3);
-        }
-        // console.log("sitesGeometry[0]", sitesGeometry[0]);
-        // this.cubeVerticesInsidePolygon(cube, sitesGeometry[0]);
+
+        // set color by checking rules
+        var message = CubeUpdater.setColor(
+            cube,
+            cubeDimensions,
+            max_pd_w,
+            max_pp_w
+        );
+        return message;
     }
 
     static updateCubeWidthSqueeze(cube, cubeDimensions, initialPosition) {
@@ -202,13 +203,8 @@ export default class CubeUpdater {
         cube.position.x -= cubeDimensions.Width / 2.0;
         cube.position.y += cubeDimensions.Height / 2.0;
 
-        if (cubeDimensions.Height < max_pd_h) {
-            cube.material.color.set(cubeDimensions.color1);
-        } else if (cubeDimensions.Height <= max_pp_h) {
-            cube.material.color.set(cubeDimensions.color2);
-        } else {
-            cube.material.color.set(cubeDimensions.color3);
-        }
+        // set color by checking rules
+        CubeUpdater.setColor(cube, cubeDimensions, max_pd_h, max_pp_h);
     }
 
     static checkPointInPolygon(point, polygon) {
@@ -271,5 +267,24 @@ export default class CubeUpdater {
         }
 
         return globalMessage;
+    }
+
+    static checkBreakRules(cube, sitesGeometry) {
+        console.log("checkBreakRules");
+    }
+
+    static setColor(cube, cubeDimensions, max_pd, max_pp) {
+        // set color by checking rules
+        if (cubeDimensions.Width <= max_pd) {
+            cube.material.color.set(cubeDimensions.color1);
+            message = "Permissable under PD";
+        } else if (cubeDimensions.Width <= max_pp) {
+            cube.material.color.set(cubeDimensions.color2);
+            message = "Permissable under PP";
+        } else {
+            cube.material.color.set(cubeDimensions.color3);
+            message = "Not Permissable";
+        }
+        return message;
     }
 }
