@@ -36,7 +36,8 @@
 }
 
 h4 {
-    margin: 20px 0; /* adjust as needed */
+    /* margin: 00px 0; adjust as needed */
+    padding-bottom: 10px;
 }
 
 #gui {
@@ -173,17 +174,19 @@ h4 {
 body,
 html {
     margin: 0;
-    padding: 0;
     width: 100%;
     height: 100%;
     background-color: black;
     color: white;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 .container {
     display: flex;
     flex-wrap: wrap;
     width: 100vw;
+    padding: 10px;
 }
 
 .main-box {
@@ -208,10 +211,11 @@ html {
 .model-box {
     flex: 0 0 75%; /* It occupies 75% of the parent's width */
     border: 5px solid #eee;
-    border-radius: 5px;
-    padding: 0; /* Remove padding if any */
+    border-radius: 10px;
+    padding: 2px; /* Remove padding if any */
     margin: 0; /* Remove margins to avoid space between boxes */
     margin-left: 1rem;
+    box-shadow: 0 0 10px rgba(46, 161, 213, 1);
 }
 .side-box {
     padding: inherit;
@@ -220,6 +224,7 @@ html {
     padding: 2px;
     margin: 0;
     margin-left: 1rem;
+    box-shadow: 0 0 10px rgba(46, 161, 213, 1);
 }
 
 .load-model-btn {
@@ -249,7 +254,7 @@ html {
 
 .fixed-width-height-div {
     height: 170px;
-    width: 390px;
+    width: 370px;
     margin: 1rem 0;
 }
 
@@ -259,6 +264,7 @@ html {
     /* margin: 0 auto; */
     max-width: 85%;
     width: 85%;
+    /* box shadow */
 }
 
 .radio-efc {
@@ -267,7 +273,7 @@ html {
 
 .content-efc {
     background: #191919 100% / cover no-repeat;
-    border-radius: 3rem;
+    border-radius: 1rem;
     border: 3px solid #aaa;
     cursor: pointer;
     flex: 1;
@@ -275,6 +281,8 @@ html {
     overflow: hidden;
     position: relative;
     transition: all 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+    /* transition-property: flex, border-radius, box-shadow; */
+    box-shadow: 0 0 10px rgba(46, 161, 213, 1);
 }
 
 .content-efc:hover {
@@ -295,7 +303,7 @@ html {
 
 .card-title-efc {
     bottom: 2rem;
-    color: var(--white);
+    color: #aaa;
     display: flex;
     flex-direction: column;
     font-size: 1.2rem;
@@ -315,15 +323,18 @@ html {
 /* Effect */
 .radio-efc:checked + .content-efc {
     border-radius: 2rem;
-    box-shadow: 0.3rem 0.3rem 0.4rem rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0.3rem 0.3rem 0.4rem rgba(0, 0, 0, 0.3); */
     flex: 10;
     border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(46, 161, 213, 1);
 }
 
 .radio-efc:checked + .content-efc > .card-title-efc {
     opacity: 1;
     transform: translateX(0);
     bottom: 0rem;
+    color: #fff;
+    font-weight: bold;
 }
 
 .active {
@@ -390,6 +401,8 @@ html {
     width: 75vw;
     height: 37.5vw; /* half of the width */
     border: 1px solid black;
+    box-shadow: 0 0 10px rgba(46, 161, 213, 1);
+    border-radius: 10px;
 }
 
 .small-box {

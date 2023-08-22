@@ -590,12 +590,16 @@ function roundToPrecision(number, precision) {
 }
 
 function updateAreaCostElements(add_area, bpsqm) {
+    const text_color = "rgb(200,200,200)";
     const addAreaElement = document.getElementById("add_area");
     addAreaElement.textContent = roundToPrecision(add_area, 0.1);
+    addAreaElement.style.color = text_color; // changing text color to blue
     const costElement = document.getElementById("cost");
     costElement.textContent = roundToPrecision(add_area * bpsqm, 1000);
+    costElement.style.color = text_color; // changing text color to blue
     const messageElement = document.getElementById("message");
     messageElement.textContent = message;
+    messageElement.style.color = text_color; // changing text color to blue
     // const warningElement = document.getElementById("warning");
     // warningElement.textContent = warning;
 }
@@ -609,6 +613,7 @@ function updateExtensionDimenions(name, count, cube) {
     var width_box = roundToPrecision(size.x, 0.1);
     var height_box = roundToPrecision(size.y, 0.1);
     var depth_box = roundToPrecision(size.z, 0.1);
+    const text_color = "rgb(200,200,200)";
     // Example usage - replace with your own content
     if (count == 1) {
         // Create the HTML structure with the desired styles
@@ -625,6 +630,7 @@ function updateExtensionDimenions(name, count, cube) {
             extension1Dims.style.display = "none";
         } else {
             extension1Dims.innerHTML = content1;
+            extension1Dims.style.color = text_color; // changing text color to blue
         }
     } else if (count == 2) {
         const content2 = `
@@ -639,6 +645,7 @@ function updateExtensionDimenions(name, count, cube) {
             extension2Dims.style.display = "none";
         } else {
             extension2Dims.innerHTML = content2;
+            extension2Dims.style.color = text_color; // changing text color to blue
         }
     } else if (count == 3) {
         const content3 = `
@@ -653,6 +660,7 @@ function updateExtensionDimenions(name, count, cube) {
             extension3Dims.style.display = "none";
         } else {
             extension3Dims.innerHTML = content3;
+            extension3Dims.style.color = text_color; // changing text color to blue
         }
     }
 }
