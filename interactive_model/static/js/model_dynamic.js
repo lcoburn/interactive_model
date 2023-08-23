@@ -5,8 +5,6 @@ import { JsonGeometryLoader } from "./JsonGeometryLoader.js";
 import { GUI } from "https://cdn.skypack.dev/dat.gui";
 import CubeUpdater from "./cubeupdaternew.js";
 
-let message = "Test";
-
 // Set Local Authority
 const localAuthorityValue = houseInfo.localAuthority;
 
@@ -58,7 +56,7 @@ export function loadModel() {
             material.color.set(0x000000);
             material.opacity = 1.0;
         }
-
+        console.log("geometry", geometry);
         // Create a mesh with the geometry and material
         const cube = new THREE.Mesh(geometry, material);
         const edges = new THREE.EdgesGeometry(cube.geometry);
@@ -152,7 +150,11 @@ function loadExtensions(scene, loader, house_width, house_depth) {
     // remove existing GUI;
     document.getElementById("general-container-efc").innerHTML = "";
 
-    adjustableGeometries.forEach((adjustableGeometry) => {
+    adjustableGeometries.forEach((adjustableGeometry, index) => {
+        var keys = Object.keys(adjustableCasesMessages[currentKey]);
+        adjustableCasesMessages[currentKey][keys[index]] =
+            "Possible under Permitted Development";
+
         let geometry = loader.createGeometry(adjustableGeometry);
         // Create a material
         const material = new THREE.MeshStandardMaterial({
@@ -163,7 +165,6 @@ function loadExtensions(scene, loader, house_width, house_depth) {
         let cube = new THREE.Mesh(geometry, material);
         add_area += calculateBaseArea(cube);
     });
-
     adjustableGeometries.forEach((adjustableGeometry) => {
         let geometry = loader.createGeometry(adjustableGeometry);
         adjustable_values =
@@ -172,20 +173,21 @@ function loadExtensions(scene, loader, house_width, house_depth) {
             adjustableCases[currentKey].geometry[count].adjustable_walls;
         let name = adjustableCases[currentKey].case[count];
         let long_name = "";
+        let short_name = "";
         if (name == "3" || name == "19") {
-            name = "Side";
+            short_name = "Side";
             long_name = "Side Extension";
         }
         if (name == "4" || name == "5") {
-            name = "Rear";
+            short_name = "Rear";
             long_name = "Rear Extension";
         }
         if (name == "1L" || name == "7L") {
-            name = "Hip to Gable";
+            short_name = "Hip to Gable";
             long_name = "Hip to Gable Loft Conversion";
         }
         if (name == "4L") {
-            name = "Loft";
+            short_name = "Loft";
             long_name = "Loft Conversion";
         }
 
@@ -208,11 +210,12 @@ function loadExtensions(scene, loader, house_width, house_depth) {
             house_width,
             house_depth,
             name,
+            short_name,
             long_name,
             add_area,
             bpsqm
         );
-        updateExtensionDimenions(long_name, count, cube);
+        updateExtensionDimenions(long_name, count, cube, name);
     });
     updateAreaCostElements(add_area, bpsqm);
 }
@@ -225,6 +228,7 @@ function createGUI(
     house_width,
     house_depth,
     name,
+    short_name,
     long_name,
     add_area,
     bpsqm
@@ -267,7 +271,7 @@ function createGUI(
     var gui = new GUI({ autoPlace: false });
     gui.domElement.id = gui_id;
 
-    document.getElementById(title_id).innerHTML = name;
+    document.getElementById(title_id).innerHTML = short_name;
 
     const buttons = document.querySelectorAll(".extension-btn");
     buttons.forEach((button) => {
@@ -305,7 +309,7 @@ function createGUI(
     var max_pp_d = adjustable_values["Max PP D "] || 6.0;
     var min_width = adjustable_values["Min Width"] || 1.5;
     var max_pd_w = adjustable_values["Max PD W "] || 3.0;
-    var max_pp_w = adjustable_values["Max PP W"] || 6.0;
+    var max_pp_w = 10.0; //adjustable_values["Max PP W"] || 6.0;
     var min_height = adjustable_values["Min Height"] || 2.5;
     var max_pd_h = adjustable_values["Max PD H "] || 3.0;
     var max_pp_h = adjustable_values["Max PP H "] || 3.0;
@@ -359,7 +363,8 @@ function createGUI(
                     boundary,
                     min_depth,
                     max_pd_d,
-                    max_pp_d
+                    max_pp_d,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -369,7 +374,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
     }
@@ -386,7 +391,7 @@ function createGUI(
                 // get old area
                 let oldArea = calculateBaseArea(cube);
 
-                message = CubeUpdater.updateCubeWidth(
+                CubeUpdater.updateCubeWidth(
                     cube,
                     { ...cubeDimensions, Width },
                     initialPosition,
@@ -394,7 +399,8 @@ function createGUI(
                     min_depth,
                     max_pd_w,
                     max_pp_w,
-                    1
+                    1,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -404,7 +410,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
     }
@@ -417,7 +423,7 @@ function createGUI(
                 // get old area
                 let oldArea = calculateBaseArea(cube);
 
-                message = CubeUpdater.updateCubeWidth(
+                CubeUpdater.updateCubeWidth(
                     cube,
                     { ...cubeDimensions, Width },
                     initialPosition,
@@ -425,7 +431,8 @@ function createGUI(
                     min_depth,
                     max_pd_w,
                     max_pp_w,
-                    -1
+                    -1,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -435,7 +442,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
     }
@@ -452,7 +459,8 @@ function createGUI(
                     initialPosition,
                     min_height,
                     max_pd_h,
-                    max_pp_h
+                    max_pp_h,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -462,7 +470,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
     }
@@ -477,7 +485,8 @@ function createGUI(
                 CubeUpdater.updateCubeWidthSqueeze(
                     cube,
                     { ...cubeDimensions, Width },
-                    initialPosition
+                    initialPosition,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -487,7 +496,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
         console.log("and horizontal position slider");
@@ -500,7 +509,8 @@ function createGUI(
                     cube,
                     { ...cubeDimensions, H_Offset },
                     initialPosition,
-                    boundary
+                    boundary,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -510,7 +520,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
     }
@@ -525,7 +535,8 @@ function createGUI(
                 CubeUpdater.updateCubeDepthSqueeze(
                     cube,
                     { ...cubeDimensions, Depth },
-                    initialPosition
+                    initialPosition,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -535,7 +546,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
         console.log("and vertical position slider");
@@ -548,7 +559,8 @@ function createGUI(
                     cube,
                     { ...cubeDimensions, V_Offset },
                     initialPosition,
-                    boundary
+                    boundary,
+                    name
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -558,7 +570,7 @@ function createGUI(
                 add_area += newArea;
 
                 updateAreaCostElements(add_area, bpsqm);
-                updateExtensionDimenions(long_name, count, cube);
+                updateExtensionDimenions(long_name, count, cube, name);
             }
         );
     }
@@ -591,16 +603,16 @@ function updateAreaCostElements(add_area, bpsqm) {
     addAreaElement.textContent = roundToPrecision(add_area, 0.1);
     addAreaElement.style.color = text_color; // changing text color to blue
     const costElement = document.getElementById("cost");
-    costElement.textContent = roundToPrecision(add_area * bpsqm, 1000);
+    costElement.textContent = "£" + roundToPrecision(add_area * bpsqm, 1000);
     costElement.style.color = text_color; // changing text color to blue
     const messageElement = document.getElementById("message");
-    messageElement.textContent = message;
-    messageElement.style.color = text_color; // changing text color to blue
+    // messageElement.textContent = message;
+    // messageElement.style.color = text_color; // changing text color to blue
     // const warningElement = document.getElementById("warning");
     // warningElement.textContent = warning;
 }
 
-function updateExtensionDimenions(name, count, cube) {
+function updateExtensionDimenions(long_name, count, cube, name) {
     var box3 = new THREE.Box3().setFromObject(cube);
     var size = new THREE.Vector3();
     box3.getSize(size);
@@ -614,8 +626,9 @@ function updateExtensionDimenions(name, count, cube) {
     if (count == 1) {
         // Create the HTML structure with the desired styles
         const content1 = `
-<strong>${name}:</strong><br>
-<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m
+<strong>${long_name}:</strong>
+<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
+<strong>Planning Notes: </strong>${adjustableCasesMessages[currentKey][name]}<br><br>
 `;
         const extension1Dims = document.querySelector(
             ".extension-1-dimensions"
@@ -630,8 +643,9 @@ function updateExtensionDimenions(name, count, cube) {
         }
     } else if (count == 2) {
         const content2 = `
-<strong>${name}:</strong><br>
-<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m
+<strong>${long_name}:</strong>
+<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
+<strong>Planning Notes: </strong> ${adjustableCasesMessages[currentKey][name]}<br><br>
 `;
         const extension2Dims = document.querySelector(
             ".extension-2-dimensions"
@@ -645,8 +659,9 @@ function updateExtensionDimenions(name, count, cube) {
         }
     } else if (count == 3) {
         const content3 = `
-<strong>${name}:</strong><br>
-<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m
+<strong>${long_name}:</strong>
+<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
+<strong>Planning Notes: </strong> ${adjustableCasesMessages[currentKey][name]}<br><br>
 `;
         const extension3Dims = document.querySelector(
             ".extension-3-dimensions"

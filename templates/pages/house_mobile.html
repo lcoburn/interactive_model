@@ -1,137 +1,6 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
-<script type="module" src="/static/js/model_dynamic.js"></script>
 <link rel="stylesheet" href="/static/css/model_dynamic_mobile.css" />
-
-<style>
-    .small-superscript {
-        font-size: 70%; /* This makes it half its original size */
-        vertical-align: super; /* This ensures it remains in the superscript position */
-    }
-</style>
-
-<script>
-    // Access specific properties within the data object
-    var houseInfoStr = "{{ house_data.houseInfo|safe }}";
-    var houseInfo = JSON.parse(houseInfoStr.replace(/'/g, '"'));
-    var housesGeometryStr = "{{ house_data.housesGeometry|safe }}";
-    var housesGeometry = JSON.parse(housesGeometryStr.replace(/'/g, '"'));
-    var sitesGeometryStr = "{{ house_data.sitesGeometry|safe }}";
-    var sitesGeometry = JSON.parse(sitesGeometryStr.replace(/'/g, '"'));
-    var adjustableCasesStr = "{{ house_data.adjustableCases|safe }}";
-    var adjustableCases = JSON.parse(
-        adjustableCasesStr
-            .replace(/'/g, '"')
-            .replace(/None/g, "null")
-            .replace(/True/g, "true")
-            .replace(/False/g, "false")
-    );
-    var houseDataStr = "{{ house_data|safe }}";
-    var houseData = JSON.parse(
-        houseDataStr
-            .replace(/'/g, '"')
-            .replace(/None/g, "null")
-            .replace(/True/g, "true")
-            .replace(/False/g, "false")
-    );
-    var main_block = housesGeometry.Main[0];
-    let centreX = 0;
-    let centreY = 0;
-    let centreZ = 0;
-    for (let i = 0; i < main_block.vertices.length; i++) {
-        centreX += main_block.vertices[i].x;
-        centreY += main_block.vertices[i].y;
-        centreZ += main_block.vertices[i].z;
-    }
-    centreX = centreX / main_block.vertices.length;
-    centreY = centreY / main_block.vertices.length;
-    centreZ = centreZ / main_block.vertices.length;
-    var currentKey = "case1"; // initialize with a case1
-
-    // calculate site area
-    var site_area = 0;
-    var site_x = sitesGeometry.Main[0][0];
-    var site_y = sitesGeometry.Main[0][1];
-    // calculate site area from the x and y arrays
-    for (let i = 0; i < site_x.length - 1; i++) {
-        site_area += site_x[i] * site_y[i + 1] - site_x[i + 1] * site_y[i];
-    }
-    site_area = Math.abs(site_area / 2.0);
-    console.log("site_area", site_area);
-
-    // calculate footprint area
-    var footprint_area = 0;
-    // loop through all the geometries of the houseGeometry.Main and select the ones on the lowest level
-    for (let i = 0; i < housesGeometry.Main.length; i++) {
-        var house = housesGeometry.Main[i];
-        var lowest_level = house.vertices[0].y;
-        for (let j = 0; j < house.vertices.length; j++) {
-            if (house.vertices[j].y < lowest_level) {
-                lowest_level = house.vertices[j].y;
-            }
-        }
-        // if the lowest level is 0, then it is a footprint
-        if (lowest_level == 0) {
-            // calculate the area of the footprint
-            var x = [];
-            var y = [];
-            for (let j = 0; j < house.vertices.length; j++) {
-                x.push(house.vertices[j].x);
-                y.push(house.vertices[j].z);
-            }
-            for (let j = 0; j < x.length - 1; j++) {
-                footprint_area += x[j] * y[j + 1] - x[j + 1] * y[j];
-            }
-            footprint_area = Math.abs(footprint_area / 4.0);
-        }
-    }
-    var house_width = Math.abs(
-        housesGeometry.Main[0].vertices[1].x -
-            housesGeometry.Main[0].vertices[0].x
-    );
-    var house_depth = Math.abs(
-        housesGeometry.Main[0].vertices[2].z -
-            housesGeometry.Main[0].vertices[0].z
-    );
-    console.log("footprint_area", footprint_area, house_width * house_depth);
-
-    document.addEventListener("DOMContentLoaded", function (event) {
-        // Create a Map to store the data associated with each button
-        let dataMap = new Map();
-        // Get the keys from the dictionary
-        const keys = Object.keys(adjustableCases);
-
-        // Get the container where you want to add the buttons
-        const buttonContainer = document.getElementById("button-container");
-
-        // Iterate over the keys
-        keys.forEach((key) => {
-            // Create a new button element
-            const btn = document.createElement("button");
-
-            // Set the button's text to the case_name from the dictionary using the key
-            btn.innerHTML = adjustableCases[key].case_name;
-            btn.id = key;
-            btn.classList.add("load-model-btn");
-
-            if (key === "case1") {
-                btn.classList.add("active");
-            }
-
-            // Add an event listener to the button
-            btn.addEventListener("click", function () {
-                // Store the data in the Map with the button's key as the map key
-                dataMap.set(key, adjustableCases[key]);
-                // Update the global variable
-                currentKey = key;
-                // Store the data in the Map with the button's key as the map key
-                dataMap.set(key, adjustableCases[key]);
-            });
-            // Append the button to the container
-            buttonContainer.appendChild(btn);
-        });
-    });
-</script>
 
 <!-- <script src="{% static 'djangojs/jquery.json.min.js' %}"></script> -->
 
@@ -143,12 +12,12 @@
                 alt="Your Logo"
                 class="logo"
             />
-            <h4><b>POTENTIAL EXTENSIONS</b></h4>
+            <!-- <h4><b>POTENTIAL EXTENSIONS</b></h4> -->
             <h8>
-                <span id="house-address"
+                <!-- <span id="house-address"
                     >{{ house_data.houseInfo.address_string }}</span
                 >
-                <br />
+                <br /> -->
                 <b>Local Authority:</b>
                 <i><span id="local_authority"></span></i>
             </h8>
@@ -250,6 +119,7 @@
                                 >2</span
                             >
                         </div>
+                        <br />
                         <div class="side-box-content-3">
                             <div class="extension-1-dimensions"></div>
                         </div>
@@ -268,16 +138,15 @@
                                     >2</span
                                 >):</b
                             >
-                            <br />
-                            £<span id="cost"></span>
+                            <span id="cost"></span>
                         </div>
-                        <br />
+                        <!-- <br />
                         <div class="side-box-content-7">
                             <b>Message:</b>
                             <br />
                             <span id="message"></span>
                         </div>
-                        <br />
+                        <br /> -->
                         <!-- <div class="side-box-content-8">
                             <b>Warning:</b>
                             <br />

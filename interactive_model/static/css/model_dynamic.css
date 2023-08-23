@@ -219,6 +219,10 @@ html {
     padding: 5px;
     width: 100%;
 }
+.small-superscript {
+    font-size: 70%; /* This makes it half its original size */
+    vertical-align: super; /* This ensures it remains in the superscript position */
+}
 
 .load-model-btn {
     color: black;

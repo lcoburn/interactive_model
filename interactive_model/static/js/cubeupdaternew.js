@@ -1,6 +1,6 @@
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0";
 
-export let message = "Permissable under PD";
+export let message = "Permissable under Permitted Development";
 
 // CubeUpdater.js
 export default class CubeUpdater {
@@ -29,7 +29,8 @@ export default class CubeUpdater {
         boundary,
         min_depth,
         max_pd_d,
-        max_pp_d
+        max_pp_d,
+        name
     ) {
         cube.geometry.dispose();
 
@@ -48,12 +49,13 @@ export default class CubeUpdater {
         cube.position.y += cubeDimensions.Height / 2.0;
 
         // set color by checking rules
-        var break_rules = false;
-        if (break_rules) {
-            cube.material.color.set(cubeDimensions.color3);
-        } else {
-            CubeUpdater.setColor(cube, cubeDimensions, max_pd_d, max_pp_d);
-        }
+        adjustableCasesMessages[currentKey][name] =
+            CubeUpdater.setColorAndMessage(
+                cube,
+                cubeDimensions,
+                max_pd_d,
+                max_pp_d
+            );
     }
 
     static updateCubeWidth(
@@ -64,10 +66,10 @@ export default class CubeUpdater {
         min_width,
         max_pd_w,
         max_pp_w,
-        sign
+        sign,
+        name
     ) {
         cube.geometry.dispose();
-
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(
             cubeDimensions.Width,
@@ -85,16 +87,16 @@ export default class CubeUpdater {
         cube.position.y += cubeDimensions.Height / 2.0;
 
         // set color by checking rules
-        var message = CubeUpdater.setColor(
-            cube,
-            cubeDimensions,
-            max_pd_w,
-            max_pp_w
-        );
-        return message;
+        adjustableCasesMessages[currentKey][name] =
+            CubeUpdater.setColorAndMessage(
+                cube,
+                cubeDimensions,
+                max_pd_w,
+                max_pp_w
+            );
     }
 
-    static updateCubeWidthSqueeze(cube, cubeDimensions, initialPosition) {
+    static updateCubeWidthSqueeze(cube, cubeDimensions, initialPosition, name) {
         cube.geometry.dispose();
 
         // create new geometry
@@ -114,7 +116,7 @@ export default class CubeUpdater {
         cube.position.x -= cubeDimensions.Width / 2.0;
     }
 
-    static updateCubeDepthSqueeze(cube, cubeDimensions, initialPosition) {
+    static updateCubeDepthSqueeze(cube, cubeDimensions, initialPosition, name) {
         cube.geometry.dispose();
 
         // create new geometry
@@ -138,7 +140,8 @@ export default class CubeUpdater {
         cube,
         cubeDimensions,
         initialPosition,
-        boundary
+        boundary,
+        name
     ) {
         // No need to dispose and recreate the geometry if the dimensions aren't changing
         // cube.geometry.dispose();
@@ -159,7 +162,8 @@ export default class CubeUpdater {
         cube,
         cubeDimensions,
         initialPosition,
-        boundary
+        boundary,
+        name
     ) {
         // No need to dispose and recreate the geometry if the dimensions aren't changing
         // cube.geometry.dispose();
@@ -182,7 +186,8 @@ export default class CubeUpdater {
         initialPosition,
         min_height,
         max_pd_h,
-        max_pp_h
+        max_pp_h,
+        name
     ) {
         cube.geometry.dispose();
 
@@ -204,9 +209,84 @@ export default class CubeUpdater {
         cube.position.y += cubeDimensions.Height / 2.0;
 
         // set color by checking rules
-        CubeUpdater.setColor(cube, cubeDimensions, max_pd_h, max_pp_h);
+        adjustableCasesMessages[currentKey][name] =
+            CubeUpdater.setColorAndMessage(
+                cube,
+                cubeDimensions,
+                max_pd_h,
+                max_pp_h
+            );
     }
 
+    static checkBreakRules(cube, cubeDimensions, sitesGeometry) {
+        var break_rules = false;
+        var message = "";
+        console.log(
+            CubeUpdater.cubeVerticesInsidePolygon(cube, sitesGeometry.Main)
+        );
+        if (CubeUpdater.cubeVerticesInsidePolygon(cube, sitesGeometry.Main)) {
+            break_rules = true;
+            message = "Out of Bounds";
+            cube.material.color.set(cubeDimensions.color3);
+        }
+        return {
+            message: message,
+            break_rules: break_rules,
+        };
+    }
+
+    static setColorAndMessage(cube, cubeDimensions, max_pd, max_pp) {
+        var { message, break_rules } = CubeUpdater.checkBreakRules(
+            cube,
+            cubeDimensions,
+            sitesGeometry
+        );
+        console.log("***********", message, break_rules, "***********");
+        if (!break_rules) {
+            // set color by checking rules
+            if (cubeDimensions.Width <= max_pd) {
+                cube.material.color.set(cubeDimensions.color1);
+                message = "Permissable under PD";
+            } else if (cubeDimensions.Width <= max_pp) {
+                cube.material.color.set(cubeDimensions.color2);
+                message = "Permissable under PP";
+            } else {
+                cube.material.color.set(cubeDimensions.color3);
+                message = "Not Permissable";
+            }
+        }
+        return message;
+    }
+
+    static cubeVerticesInsidePolygon(cube, polygon) {
+        let vertices = []; // Array to store the vertices of the cube
+        var newPolygon = polygon[0];
+
+        // Assuming the cube's position is its center and it's aligned with the coordinate axes
+        let halfWidth = cube.geometry.parameters.width / 2;
+        let halfHeight = cube.geometry.parameters.height / 2;
+        let halfDepth = cube.geometry.parameters.depth / 2;
+
+        let x = cube.position.x;
+        let y = cube.position.y;
+        let z = cube.position.z;
+        console.log("Half Width: ", halfWidth, "Half Depth: ", halfDepth);
+
+        // Assuming you're checking the cube in the xy-plane, so z-coordinate is ignored
+        vertices.push([x - halfWidth, z - halfDepth]); // bottom-left
+        vertices.push([x + halfWidth, z - halfDepth]); // bottom-right
+        vertices.push([x + halfWidth, z + halfDepth]); // top-right
+        vertices.push([x - halfWidth, z + halfDepth]); // top-left
+        // You can add the other 4 vertices if you're checking against a 3D polygon
+        var isInside = true;
+        console.log(vertices, polygon[0]);
+        for (let vertex of vertices) {
+            if (!this.checkPointInPolygon(vertex, polygon[0])) {
+                isInside = false; // If any vertex is outside the polygon, return false
+            }
+        }
+        return isInside;
+    }
     static checkPointInPolygon(point, polygon) {
         let x = point[0],
             y = point[1];
@@ -220,9 +300,9 @@ export default class CubeUpdater {
             i < polygon[0].length;
             j = i++
         ) {
-            let xi = polygon[0][i],
+            let xi = -polygon[0][i],
                 yi = polygon[1][i];
-            let xj = polygon[0][j],
+            let xj = -polygon[0][j],
                 yj = polygon[1][j];
 
             let intersect =
@@ -230,61 +310,6 @@ export default class CubeUpdater {
                 x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
             if (intersect) inside = !inside;
         }
-
         return inside;
-    }
-
-    static cubeVerticesInsidePolygon(cube, polygon) {
-        let vertices = []; // Array to store the vertices of the cube
-
-        // Assuming the cube's position is its center and it's aligned with the coordinate axes
-        let halfWidth = cube.geometry.parameters.width / 2;
-        let halfHeight = cube.geometry.parameters.height / 2;
-        let halfDepth = cube.geometry.parameters.depth / 2;
-
-        let x = cube.position.x;
-        let y = cube.position.y;
-        let z = cube.position.z;
-
-        // Assuming you're checking the cube in the xy-plane, so z-coordinate is ignored
-        vertices.push([x - halfWidth, y - halfHeight]); // bottom-left
-        vertices.push([x + halfWidth, y - halfHeight]); // bottom-right
-        vertices.push([x + halfWidth, y + halfHeight]); // top-right
-        vertices.push([x - halfWidth, y + halfHeight]); // top-left
-        // You can add the other 4 vertices if you're checking against a 3D polygon
-
-        var isInside = true;
-        for (let vertex of vertices) {
-            if (!this.checkPointInPolygon(vertex, polygon)) {
-                isInside = false; // If any vertex is outside the polygon, return false
-            }
-        }
-
-        if (isInside) {
-            globalMessage = "No warning";
-        } else {
-            globalMessage = "Out of bounds";
-        }
-
-        return globalMessage;
-    }
-
-    static checkBreakRules(cube, sitesGeometry) {
-        console.log("checkBreakRules");
-    }
-
-    static setColor(cube, cubeDimensions, max_pd, max_pp) {
-        // set color by checking rules
-        if (cubeDimensions.Width <= max_pd) {
-            cube.material.color.set(cubeDimensions.color1);
-            message = "Permissable under PD";
-        } else if (cubeDimensions.Width <= max_pp) {
-            cube.material.color.set(cubeDimensions.color2);
-            message = "Permissable under PP";
-        } else {
-            cube.material.color.set(cubeDimensions.color3);
-            message = "Not Permissable";
-        }
-        return message;
     }
 }

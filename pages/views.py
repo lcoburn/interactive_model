@@ -14,4 +14,4 @@ def download_json(request, data_id):
         return render(request, 'pages/house_mobile.html', { 'house_data': data['data'] })    
     else:
         print('pc')
-        return render(request, 'pages/house.html', { 'house_data': data['data'] })
+        return render(request, 'pages/house_mobile.html', { 'house_data': data['data'] })
