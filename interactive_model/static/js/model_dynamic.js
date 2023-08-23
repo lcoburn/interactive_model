@@ -41,10 +41,12 @@ export function loadModel() {
         housesGeometry.Left,
         housesGeometry.Right
     );
-
+    console.log("*********", centreX, centreY, centreZ);
     geometries.forEach((geometryTemp) => {
+        console.log(geometryTemp);
         const geometry = loader.createGeometry(geometryTemp);
-
+        console.log(geometry);
+        console.log("----------");
         // Create a material
         const material = new THREE.MeshStandardMaterial({
             color: 0xffffff,
@@ -96,7 +98,7 @@ export function loadModel() {
     camera.position.z = 25;
     camera.position.x = 4;
     camera.position.y = 15;
-    camera.lookAt(centreX, centreY, centreZ);
+    camera.lookAt(centreX - 3, centreY - 3, centreZ - 3);
     scene.add(camera);
 
     // Renderer
@@ -108,7 +110,7 @@ export function loadModel() {
 
     // Controls
     const controls = new OrbitControls(camera, canvas);
-    controls.target.set(centreX, centreY, centreZ); // Set the orbit target to the scene center
+    controls.target.set(centreX - 3, centreY - 3, centreZ - 3); // Set the orbit target to the scene center
     controls.update();
     controls.enableDamping = true;
     controls.enablePan = false;
@@ -367,7 +369,8 @@ function createGUI(
                     min_depth,
                     max_pd_d,
                     max_pp_d,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -403,7 +406,8 @@ function createGUI(
                     max_pd_w,
                     max_pp_w,
                     1,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -435,7 +439,8 @@ function createGUI(
                     max_pd_w,
                     max_pp_w,
                     -1,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -463,7 +468,8 @@ function createGUI(
                     min_height,
                     max_pd_h,
                     max_pp_h,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -489,7 +495,8 @@ function createGUI(
                     cube,
                     { ...cubeDimensions, Width },
                     initialPosition,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -513,7 +520,8 @@ function createGUI(
                     { ...cubeDimensions, H_Offset },
                     initialPosition,
                     boundary,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -539,7 +547,8 @@ function createGUI(
                     cube,
                     { ...cubeDimensions, Depth },
                     initialPosition,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);
@@ -563,7 +572,8 @@ function createGUI(
                     { ...cubeDimensions, V_Offset },
                     initialPosition,
                     boundary,
-                    name
+                    name,
+                    add_area
                 );
                 // get new area
                 let newArea = calculateBaseArea(cube);

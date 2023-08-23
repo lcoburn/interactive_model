@@ -30,8 +30,10 @@ export default class CubeUpdater {
         min_depth,
         max_pd_d,
         max_pp_d,
-        name
+        name,
+        add_area
     ) {
+        var oldArea = this.calculateBaseArea(cube);
         cube.geometry.dispose();
 
         // create new geometry
@@ -55,7 +57,9 @@ export default class CubeUpdater {
                 cubeDimensions,
                 cubeDimensions.Depth,
                 max_pd_d,
-                max_pp_d
+                max_pp_d,
+                add_area,
+                oldArea
             );
     }
 
@@ -68,8 +72,10 @@ export default class CubeUpdater {
         max_pd_w,
         max_pp_w,
         sign,
-        name
+        name,
+        add_area
     ) {
+        var oldArea = this.calculateBaseArea(cube);
         cube.geometry.dispose();
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(
@@ -94,11 +100,19 @@ export default class CubeUpdater {
                 cubeDimensions,
                 cubeDimensions.Width,
                 max_pd_w,
-                max_pp_w
+                max_pp_w,
+                add_area,
+                oldArea
             );
     }
 
-    static updateCubeWidthSqueeze(cube, cubeDimensions, initialPosition, name) {
+    static updateCubeWidthSqueeze(
+        cube,
+        cubeDimensions,
+        initialPosition,
+        name,
+        add_area
+    ) {
         cube.geometry.dispose();
 
         // create new geometry
@@ -118,7 +132,13 @@ export default class CubeUpdater {
         cube.position.x -= cubeDimensions.Width / 2.0;
     }
 
-    static updateCubeDepthSqueeze(cube, cubeDimensions, initialPosition, name) {
+    static updateCubeDepthSqueeze(
+        cube,
+        cubeDimensions,
+        initialPosition,
+        name,
+        add_area
+    ) {
         cube.geometry.dispose();
 
         // create new geometry
@@ -165,7 +185,8 @@ export default class CubeUpdater {
         cubeDimensions,
         initialPosition,
         boundary,
-        name
+        name,
+        add_area
     ) {
         // No need to dispose and recreate the geometry if the dimensions aren't changing
         // cube.geometry.dispose();
@@ -189,10 +210,11 @@ export default class CubeUpdater {
         min_height,
         max_pd_h,
         max_pp_h,
-        name
+        name,
+        add_area
     ) {
+        var oldArea = this.calculateBaseArea(cube);
         cube.geometry.dispose();
-
         if (cubeDimensions.Height > max_pd_h) {
             cubeDimensions.Height = max_pp_h;
         }
@@ -217,19 +239,28 @@ export default class CubeUpdater {
                 cubeDimensions,
                 cubeDimensions.Height,
                 max_pd_h,
-                max_pp_h
+                max_pp_h,
+                add_area,
+                oldArea
             );
     }
 
-    static checkBreakRules(cube, cubeDimensions, sitesGeometry) {
+    static checkBreakRules(
+        cube,
+        cubeDimensions,
+        sitesGeometry,
+        add_area,
+        oldArea
+    ) {
         var break_rules = false;
         var message = "";
-        console.log(
-            CubeUpdater.cubeVerticesInsidePolygon(cube, sitesGeometry.Main)
-        );
-        if (CubeUpdater.cubeVerticesInsidePolygon(cube, sitesGeometry.Main)) {
+        if (!CubeUpdater.cubeVerticesInsidePolygon(cube, sitesGeometry.Main)) {
             break_rules = true;
             message = "Out of Bounds";
+            cube.material.color.set(cubeDimensions.color3);
+        } else if (!CubeUpdater.checkCurtilageArea(cube, add_area, oldArea)) {
+            break_rules = true;
+            message = "Extensions can not exceed 50% of the curtilage area";
             cube.material.color.set(cubeDimensions.color3);
         }
         return {
@@ -238,15 +269,24 @@ export default class CubeUpdater {
         };
     }
 
-    static setColorAndMessage(cube, cubeDimensions, dist, max_pd, max_pp) {
-        var message = "";
-        var break_rules = false;
-        // var { message, break_rules } = CubeUpdater.checkBreakRules(
-        //     cube,
-        //     cubeDimensions,
-        //     sitesGeometry
-        // );
-        console.log("***********", dist, max_pd, max_pp, "***********");
+    static setColorAndMessage(
+        cube,
+        cubeDimensions,
+        dist,
+        max_pd,
+        max_pp,
+        add_area,
+        oldArea
+    ) {
+        // var message = "";
+        // var break_rules = false;
+        var { message, break_rules } = CubeUpdater.checkBreakRules(
+            cube,
+            cubeDimensions,
+            sitesGeometry,
+            add_area,
+            oldArea
+        );
         if (!break_rules) {
             // set color by checking rules
             if (dist <= max_pd) {
@@ -269,16 +309,17 @@ export default class CubeUpdater {
         let newPolygon = polygon[0].map((subArray) =>
             new Array(subArray.length).fill(0)
         );
-        console.log("^^", newPolygon);
         // loop through new polygon and change the first array eleemtns by negating them and then subtracting 2.89
-        for (var i = 0; i < newPolygon[0][0].length; i++) {
-            newPolygon[0][i] = -polygon[0][0][i] - 2.89;
+        for (var i = 0; i < newPolygon[0].length; i++) {
+            newPolygon[0][i] = -polygon[0][0][i] - 3;
+            newPolygon[1][i] = polygon[0][1][i];
         }
 
         // Assuming the cube's position is its center and it's aligned with the coordinate axes
         let halfWidth = cube.geometry.parameters.width / 2;
         let halfHeight = cube.geometry.parameters.height / 2;
         let halfDepth = cube.geometry.parameters.depth / 2;
+        console.log("centreX", centreX);
 
         let x = cube.position.x;
         let y = cube.position.y;
@@ -291,14 +332,20 @@ export default class CubeUpdater {
         vertices.push([x - halfWidth, z + halfDepth]); // top-left
         // You can add the other 4 vertices if you're checking against a 3D polygon
         var isInside = true;
-        console.log("***", vertices, newPolygon);
         for (let vertex of vertices) {
+            console.log(
+                "*",
+                vertex,
+                newPolygon,
+                this.checkPointInPolygon(vertex, newPolygon)
+            );
             if (!this.checkPointInPolygon(vertex, newPolygon)) {
                 isInside = false; // If any vertex is outside the polygon, return false
             }
         }
         return isInside;
     }
+
     static checkPointInPolygon(point, polygon) {
         let x = point[0],
             y = point[1];
@@ -323,5 +370,31 @@ export default class CubeUpdater {
             if (intersect) inside = !inside;
         }
         return inside;
+    }
+
+    static checkCurtilageArea(cube, add_area, oldArea) {
+        var curtilage_area_check = true;
+
+        // get new area
+        let newArea = this.calculateBaseArea(cube);
+
+        // update the total area
+        add_area -= oldArea;
+        add_area += newArea;
+
+        if (add_area > 0.5 * curtilage_area) {
+            curtilage_area_check = false;
+        }
+        return curtilage_area_check;
+    }
+    static calculateBaseArea(cube) {
+        var box3 = new THREE.Box3().setFromObject(cube);
+        var size = new THREE.Vector3();
+        box3.getSize(size);
+        var area = size.x * size.z;
+        if (size.y > 5.0) {
+            area *= 2;
+        }
+        return area;
     }
 }

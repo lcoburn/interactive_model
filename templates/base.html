@@ -104,6 +104,7 @@
                     .replace(/False/g, "false")
             );
             var main_block = housesGeometry.Main[0];
+            console.log("main_block", main_block);
             let centreX = 0;
             let centreY = 0;
             let centreZ = 0;
@@ -155,6 +156,10 @@
                     footprint_area = Math.abs(footprint_area / 4.0);
                 }
             }
+            // curtilage area
+            var curtilage_area = site_area - footprint_area;
+            console.log("curtilage_area", curtilage_area);
+            // house width and depth
             var house_width = Math.abs(
                 housesGeometry.Main[0].vertices[1].x -
                     housesGeometry.Main[0].vertices[0].x
