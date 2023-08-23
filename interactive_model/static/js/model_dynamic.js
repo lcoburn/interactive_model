@@ -601,9 +601,10 @@ function roundToPrecision(number, precision) {
 }
 
 function updateAreaCostElements(add_area, bpsqm) {
-    const text_color = "rgb(200,200,200)";
+    const text_color = "rgb(255,255,255)";
     const addAreaElement = document.getElementById("add_area");
     addAreaElement.textContent = roundToPrecision(add_area, 0.1);
+    addAreaElement.style.fontWeight = "bold";
     addAreaElement.style.color = text_color; // changing text color to blue
     const costElement = document.getElementById("cost");
     costElement.textContent = "£" + roundToPrecision(add_area * bpsqm, 1000);
@@ -624,14 +625,14 @@ function updateExtensionDimenions(long_name, count, cube, name) {
     var width_box = roundToPrecision(size.x, 0.1);
     var height_box = roundToPrecision(size.y, 0.1);
     var depth_box = roundToPrecision(size.z, 0.1);
-    const text_color = "rgb(200,200,200)";
+    const text_color = "rgb(255,255,255)";
     // Example usage - replace with your own content
     if (count == 1) {
         // Create the HTML structure with the desired styles
         const content1 = `
-<strong>${long_name}:</strong>
+${long_name}:
 <i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
-<strong>Planning Notes: </strong>${adjustableCasesMessages[currentKey][name]}<br><br>
+Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
 `;
         const extension1Dims = document.querySelector(
             ".extension-1-dimensions"
@@ -646,9 +647,9 @@ function updateExtensionDimenions(long_name, count, cube, name) {
         }
     } else if (count == 2) {
         const content2 = `
-<strong>${long_name}:</strong>
-<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
-<strong>Planning Notes: </strong> ${adjustableCasesMessages[currentKey][name]}<br><br>
+        ${long_name}:
+        <i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
+        Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
 `;
         const extension2Dims = document.querySelector(
             ".extension-2-dimensions"
@@ -662,9 +663,9 @@ function updateExtensionDimenions(long_name, count, cube, name) {
         }
     } else if (count == 3) {
         const content3 = `
-<strong>${long_name}:</strong>
-<i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
-<strong>Planning Notes: </strong> ${adjustableCasesMessages[currentKey][name]}<br><br>
+        ${long_name}:
+        <i>Width:</i> ${width_box}m, <i>Depth:</i> ${depth_box}m, <i>Height:</i> ${height_box}m<br>
+        Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
 `;
         const extension3Dims = document.querySelector(
             ".extension-3-dimensions"
@@ -675,6 +676,7 @@ function updateExtensionDimenions(long_name, count, cube, name) {
         } else {
             extension3Dims.innerHTML = content3;
             extension3Dims.style.color = text_color; // changing text color to blue
+            extension3Dims.style.fontWeight = "bold";
         }
     }
 }

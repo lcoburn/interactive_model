@@ -53,6 +53,7 @@ export default class CubeUpdater {
             CubeUpdater.setColorAndMessage(
                 cube,
                 cubeDimensions,
+                cubeDimensions.Depth,
                 max_pd_d,
                 max_pp_d
             );
@@ -91,6 +92,7 @@ export default class CubeUpdater {
             CubeUpdater.setColorAndMessage(
                 cube,
                 cubeDimensions,
+                cubeDimensions.Width,
                 max_pd_w,
                 max_pp_w
             );
@@ -213,6 +215,7 @@ export default class CubeUpdater {
             CubeUpdater.setColorAndMessage(
                 cube,
                 cubeDimensions,
+                cubeDimensions.Height,
                 max_pd_h,
                 max_pp_h
             );
@@ -235,19 +238,21 @@ export default class CubeUpdater {
         };
     }
 
-    static setColorAndMessage(cube, cubeDimensions, max_pd, max_pp) {
-        var { message, break_rules } = CubeUpdater.checkBreakRules(
-            cube,
-            cubeDimensions,
-            sitesGeometry
-        );
-        console.log("***********", message, break_rules, "***********");
+    static setColorAndMessage(cube, cubeDimensions, dist, max_pd, max_pp) {
+        var message = "";
+        var break_rules = false;
+        // var { message, break_rules } = CubeUpdater.checkBreakRules(
+        //     cube,
+        //     cubeDimensions,
+        //     sitesGeometry
+        // );
+        console.log("***********", dist, max_pd, max_pp, "***********");
         if (!break_rules) {
             // set color by checking rules
-            if (cubeDimensions.Width <= max_pd) {
+            if (dist <= max_pd) {
                 cube.material.color.set(cubeDimensions.color1);
                 message = "Possible under Permitted Development";
-            } else if (cubeDimensions.Width <= max_pp) {
+            } else if (dist <= max_pp) {
                 cube.material.color.set(cubeDimensions.color2);
                 message = "Permissable under PP";
             } else {
