@@ -10,4 +10,4 @@ def download_json(request, data_id):
     if data is None:
         return render(request, 'pages/404.html')  
     else:
-        return render(request, 'pages/house_mobile.html', { 'house_data': data['data'] })
+        return render(request, 'pages/house.html', { 'house_data': data['data'] })

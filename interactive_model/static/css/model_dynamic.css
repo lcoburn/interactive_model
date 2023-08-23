@@ -1,26 +1,3 @@
-/* nav.model {
-    display: flex;
-    justify-content: space-between;
-    color: white;
-    z-index: 2;
-    position: absolute;
-    padding: 2rem;
-    top: 0;
-} */
-
-/* nav a.model {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    padding-right: 15rem;
-} */
-
-/* nav ul.model {
-    list-style: none;
-    display: flex;
-    gap: 4rem;
-} */
-
 .container-fluid {
     background-color: black;
     width: 90%;
@@ -48,13 +25,7 @@ h4 {
     padding-bottom: 10px;
 }
 
-#gui {
-    /* position: absolute;
-    top: 2px;
-    left: 2px; */
-}
 .legend {
-    /* border-radius: 10px; */
     padding: 0px;
     display: flex;
     align-items: flex-start; /* Align items to the top of the flex container */
@@ -111,7 +82,6 @@ h4 {
 }
 
 .my-gui-container {
-    /* height: 170px; */
     width: 280px;
     height: 100%;
 }
@@ -139,13 +109,6 @@ h4 {
     text-shadow: 0;
     /* add any other styles as desired */
 }
-
-/* Style for the container holding the three gui-containers */
-/* .gui-containers {
-    display: flex;
-    justify-content: space-between; 
-    margin-top: 100px; 
-} */
 
 /* Styling each .model container to take up equal width */
 .model {
@@ -252,10 +215,6 @@ html {
 .general-container-efc {
     display: flex;
     height: 100%;
-    /* margin: 0 auto; */
-    /* max-width: 85%; */
-    /* width: 85%; */
-    /* box shadow */
 }
 
 .radio-efc {
@@ -279,18 +238,6 @@ html {
     box-shadow: 0.3rem 0.3rem 0.4rem rgba(0, 0, 0, 0.3);
 }
 
-/* .content:nth-of-type(2) {
-}
-
-.content:nth-of-type(3) {
-}
-
-.content:nth-of-type(4) {
-}
-
-.content:nth-of-type(5) {
-} */
-
 .card-title-efc {
     bottom: 2rem;
     color: #aaa;
@@ -301,7 +248,6 @@ html {
     transform-origin: 50% 50%; /* setting the pivot for rotation */
     transform: rotate(-90deg) translateY(-50%); /* rotating and positioning */
     line-height: 1.1;
-    /*   opacity: 0; */
     position: absolute;
     text-shadow: 0.05rem 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
     transition: 290ms cubic-bezier(0.05, 0.61, 0.41, 0.95) 300ms;
@@ -313,10 +259,8 @@ html {
 /* Effect */
 .radio-efc:checked + .content-efc {
     border-radius: 2rem;
-    /* box-shadow: 0.3rem 0.3rem 0.4rem rgba(0, 0, 0, 0.3); */
     flex: 10;
     border: 5px solid #fff;
-    /* box-shadow: 0 0 10px rgba(46, 161, 213, 1); */
 }
 
 .radio-efc:checked + .content-efc > .card-title-efc {
@@ -378,7 +322,6 @@ html {
     width: 75vw;
     height: 37.5vw; /* half of the width */
     border: 1px solid black;
-    /* box-shadow: 0 0 10px rgba(46, 161, 213, 1); */
     border-radius: 10px;
 }
 
@@ -413,11 +356,6 @@ html {
     flex-direction: column;
 }
 
-#canvas-box,
-#slider-box,
-#details-box {
-    /* padding: 10px; */
-}
 /* Other existing styles continue here */
 /* Desktop view */
 @media (min-width: 768px) {
