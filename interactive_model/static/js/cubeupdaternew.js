@@ -246,7 +246,7 @@ export default class CubeUpdater {
             // set color by checking rules
             if (cubeDimensions.Width <= max_pd) {
                 cube.material.color.set(cubeDimensions.color1);
-                message = "Permissable under PD";
+                message = "Possible under Permitted Development";
             } else if (cubeDimensions.Width <= max_pp) {
                 cube.material.color.set(cubeDimensions.color2);
                 message = "Permissable under PP";
@@ -260,7 +260,15 @@ export default class CubeUpdater {
 
     static cubeVerticesInsidePolygon(cube, polygon) {
         let vertices = []; // Array to store the vertices of the cube
-        var newPolygon = polygon[0];
+        // let newPolygon = new Array(polygon[0].length).fill(0);
+        let newPolygon = polygon[0].map((subArray) =>
+            new Array(subArray.length).fill(0)
+        );
+        console.log("^^", newPolygon);
+        // loop through new polygon and change the first array eleemtns by negating them and then subtracting 2.89
+        for (var i = 0; i < newPolygon[0][0].length; i++) {
+            newPolygon[0][i] = -polygon[0][0][i] - 2.89;
+        }
 
         // Assuming the cube's position is its center and it's aligned with the coordinate axes
         let halfWidth = cube.geometry.parameters.width / 2;
@@ -270,7 +278,6 @@ export default class CubeUpdater {
         let x = cube.position.x;
         let y = cube.position.y;
         let z = cube.position.z;
-        console.log("Half Width: ", halfWidth, "Half Depth: ", halfDepth);
 
         // Assuming you're checking the cube in the xy-plane, so z-coordinate is ignored
         vertices.push([x - halfWidth, z - halfDepth]); // bottom-left
@@ -279,9 +286,9 @@ export default class CubeUpdater {
         vertices.push([x - halfWidth, z + halfDepth]); // top-left
         // You can add the other 4 vertices if you're checking against a 3D polygon
         var isInside = true;
-        console.log(vertices, polygon[0]);
+        console.log("***", vertices, newPolygon);
         for (let vertex of vertices) {
-            if (!this.checkPointInPolygon(vertex, polygon[0])) {
+            if (!this.checkPointInPolygon(vertex, newPolygon)) {
                 isInside = false; // If any vertex is outside the polygon, return false
             }
         }
@@ -300,9 +307,9 @@ export default class CubeUpdater {
             i < polygon[0].length;
             j = i++
         ) {
-            let xi = -polygon[0][i],
+            let xi = polygon[0][i],
                 yi = polygon[1][i];
-            let xj = -polygon[0][j],
+            let xj = polygon[0][j],
                 yj = polygon[1][j];
 
             let intersect =

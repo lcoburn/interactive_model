@@ -12,12 +12,12 @@
                 alt="Your Logo"
                 class="logo"
             />
-            <!-- <h4><b>POTENTIAL EXTENSIONS</b></h4> -->
+            <h4><b>POTENTIAL EXTENSIONS</b></h4>
             <h8>
-                <!-- <span id="house-address"
+                <span id="house-address"
                     >{{ house_data.houseInfo.address_string }}</span
                 >
-                <br /> -->
+                <br />
                 <b>Local Authority:</b>
                 <i><span id="local_authority"></span></i>
             </h8>
@@ -25,74 +25,28 @@
             <br />
 
             <div id="button-container"></div>
-            <div class="row">
-                <div class="col-md-9">
+            <div class="row my-container">
+                <div id="canvas-box" class="col-md-9">
                     <div class="row">
                         <div class="model-box" id="model-container">
                             <canvas class="webgl"></canvas>
                         </div>
                     </div>
-
-                    <div class="fixed-width-height-div">
+                </div>
+                <div id="slider-and-details-box">
+                    <div id="slider-box" class="fixed-width-height-div">
                         <div
                             id="general-container-efc"
                             class="general-container-efc"
-                        >
-                            <!-- <input
-                                class="radio-efc"
-                                type="radio"
-                                name="card"
-                                id="card-1"
-                                checked
-                            />
-                            <label class="content-efc" for="card-1">
-                                <div
-                                    id="my-gui-container-1"
-                                    class="my-gui-container"
-                                ></div>
-                                <h3
-                                    id="title-card-1"
-                                    class="card-title-efc"
-                                ></h3>
-                            </label>
-                            <input
-                                class="radio-efc"
-                                type="radio"
-                                name="card"
-                                id="card-2"
-                            />
-                            <label class="content-efc" for="card-2">
-                                <div
-                                    id="my-gui-container-2"
-                                    class="my-gui-container"
-                                ></div>
-                                <h3
-                                    id="title-card-2"
-                                    class="card-title-efc"
-                                ></h3>
-                            </label>
-                            <input
-                                class="radio-efc"
-                                type="radio"
-                                name="card"
-                                id="card-3"
-                            />
-                            <label class="content-efc" for="card-3">
-                                <h3
-                                    id="title-card-3"
-                                    class="card-title-efc"
-                                ></h3>
-                                <div
-                                    id="my-gui-container-3"
-                                    class="my-gui-container"
-                                ></div>
-                            </label> -->
-                        </div>
+                        ></div>
                     </div>
-                </div>
-                <div class="details-box col-md-3 padding_10">
-                    <div class="side-box row">
-                        <!-- <div class="instructions">
+
+                    <div
+                        id="details-box"
+                        class="details-box col-md-3 padding_10"
+                    >
+                        <div class="side-box row">
+                            <!-- <div class="instructions">
                             <i
                                 >Use the sliders below to try out different
                                 possibilities for extending this home</i
@@ -112,46 +66,47 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="side-box-content-2">
-                            <b>Additional Area: </b
-                            ><span id="add_area"></span> m<span
-                                class="small-superscript"
-                                >2</span
-                            >
-                        </div>
-                        <br />
-                        <div class="side-box-content-3">
-                            <div class="extension-1-dimensions"></div>
-                        </div>
+                            <div class="side-box-content-2">
+                                Additional Area:
+                                <b
+                                    ><span id="add_area"></span> m<span
+                                        class="small-superscript"
+                                        >2</span
+                                    ></b
+                                >
+                            </div>
+                            <br />
+                            <div class="side-box-content-3">
+                                <div class="extension-1-dimensions"></div>
+                            </div>
 
-                        <div class="side-box-content-4">
-                            <div class="extension-2-dimensions"></div>
-                        </div>
+                            <div class="side-box-content-4">
+                                <div class="extension-2-dimensions"></div>
+                            </div>
 
-                        <div class="side-box-content-5">
-                            <div class="extension-3-dimensions"></div>
-                        </div>
-                        <div class="side-box-content-6">
-                            <b
-                                >Approx Cost (based on £2000 per m<span
+                            <div class="side-box-content-5">
+                                <div class="extension-3-dimensions"></div>
+                            </div>
+                            <div class="side-box-content-6">
+                                Approx Cost (based on £2000 per m<span
                                     class="small-superscript"
                                     >2</span
-                                >):</b
-                            >
-                            <span id="cost"></span>
-                        </div>
-                        <!-- <br />
+                                >):
+                                <b><span id="cost"></span></b>
+                            </div>
+                            <!-- <br />
                         <div class="side-box-content-7">
                             <b>Message:</b>
                             <br />
                             <span id="message"></span>
                         </div>
                         <br /> -->
-                        <!-- <div class="side-box-content-8">
+                            <!-- <div class="side-box-content-8">
                             <b>Warning:</b>
                             <br />
                             <span id="warning"></span>
                         </div> -->
+                        </div>
                     </div>
                 </div>
             </div>

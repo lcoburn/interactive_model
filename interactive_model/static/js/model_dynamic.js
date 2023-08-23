@@ -34,6 +34,8 @@ export function loadModel() {
 
     // Geometry Loader
     const loader = new JsonGeometryLoader();
+    // const mainSiteGeometry = loader.createGeometry(sitesGeometry.Main);
+    // console.log(">", mainSiteGeometry);
 
     let geometries = housesGeometry.Main.concat(
         housesGeometry.Left,
@@ -42,6 +44,7 @@ export function loadModel() {
 
     geometries.forEach((geometryTemp) => {
         const geometry = loader.createGeometry(geometryTemp);
+
         // Create a material
         const material = new THREE.MeshStandardMaterial({
             color: 0xffffff,
@@ -56,7 +59,7 @@ export function loadModel() {
             material.color.set(0x000000);
             material.opacity = 1.0;
         }
-        console.log("geometry", geometry);
+
         // Create a mesh with the geometry and material
         const cube = new THREE.Mesh(geometry, material);
         const edges = new THREE.EdgesGeometry(cube.geometry);
