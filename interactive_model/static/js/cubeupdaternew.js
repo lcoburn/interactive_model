@@ -59,7 +59,8 @@ export default class CubeUpdater {
                 max_pd_d,
                 max_pp_d,
                 add_area,
-                oldArea
+                oldArea,
+                name
             );
     }
 
@@ -102,7 +103,8 @@ export default class CubeUpdater {
                 max_pd_w,
                 max_pp_w,
                 add_area,
-                oldArea
+                oldArea,
+                name
             );
     }
 
@@ -241,7 +243,8 @@ export default class CubeUpdater {
                 max_pd_h,
                 max_pp_h,
                 add_area,
-                oldArea
+                oldArea,
+                name
             );
     }
 
@@ -276,7 +279,8 @@ export default class CubeUpdater {
         max_pd,
         max_pp,
         add_area,
-        oldArea
+        oldArea,
+        name
     ) {
         // var message = "";
         // var break_rules = false;
@@ -291,13 +295,18 @@ export default class CubeUpdater {
             // set color by checking rules
             if (dist <= max_pd) {
                 cube.material.color.set(cubeDimensions.color1);
-                message = "Possible under Permitted Development";
+                if (name == "4" || name == "5") {
+                    message =
+                        "Possible under Permitted Development or Prior Approval";
+                } else {
+                    message = "Possible under Permitted Development";
+                }
             } else if (dist <= max_pp) {
                 cube.material.color.set(cubeDimensions.color2);
-                message = "Permissable under PP";
+                message = "Possible under Planning Permission";
             } else {
                 cube.material.color.set(cubeDimensions.color3);
-                message = "Not Permissable";
+                message = "Most likely will not get permission";
             }
         }
         return message;
@@ -314,12 +323,19 @@ export default class CubeUpdater {
             newPolygon[0][i] = -polygon[0][0][i] - 3;
             newPolygon[1][i] = polygon[0][1][i];
         }
+        // site centre
+        var siteCentre = this.getCentre(newPolygon);
+        for (var i = 0; i < newPolygon[0].length; i++) {
+            newPolygon[0][i] =
+                (newPolygon[0][i] - siteCentre[0]) * 1.03 + siteCentre[0];
+            newPolygon[1][i] =
+                (newPolygon[1][i] - siteCentre[1]) * 1.03 + siteCentre[1];
+        }
 
         // Assuming the cube's position is its center and it's aligned with the coordinate axes
         let halfWidth = cube.geometry.parameters.width / 2;
         let halfHeight = cube.geometry.parameters.height / 2;
         let halfDepth = cube.geometry.parameters.depth / 2;
-        console.log("centreX", centreX);
 
         let x = cube.position.x;
         let y = cube.position.y;
@@ -333,12 +349,6 @@ export default class CubeUpdater {
         // You can add the other 4 vertices if you're checking against a 3D polygon
         var isInside = true;
         for (let vertex of vertices) {
-            console.log(
-                "*",
-                vertex,
-                newPolygon,
-                this.checkPointInPolygon(vertex, newPolygon)
-            );
             if (!this.checkPointInPolygon(vertex, newPolygon)) {
                 isInside = false; // If any vertex is outside the polygon, return false
             }
@@ -396,5 +406,16 @@ export default class CubeUpdater {
             area *= 2;
         }
         return area;
+    }
+    // function to get the centre pf polygon
+    static getCentre(polygon) {
+        var siteCentre = [0, 0];
+        for (var i = 0; i < polygon[0].length; i++) {
+            siteCentre[0] += polygon[0][i];
+            siteCentre[1] += polygon[1][i];
+        }
+        siteCentre[0] /= polygon[0].length;
+        siteCentre[1] /= polygon[0].length;
+        return siteCentre;
     }
 }

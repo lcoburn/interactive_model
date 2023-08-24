@@ -34,19 +34,13 @@ export function loadModel() {
 
     // Geometry Loader
     const loader = new JsonGeometryLoader();
-    // const mainSiteGeometry = loader.createGeometry(sitesGeometry.Main);
-    // console.log(">", mainSiteGeometry);
 
     let geometries = housesGeometry.Main.concat(
         housesGeometry.Left,
         housesGeometry.Right
     );
-    console.log("*********", centreX, centreY, centreZ);
     geometries.forEach((geometryTemp) => {
-        console.log(geometryTemp);
         const geometry = loader.createGeometry(geometryTemp);
-        console.log(geometry);
-        console.log("----------");
         // Create a material
         const material = new THREE.MeshStandardMaterial({
             color: 0xffffff,
@@ -310,11 +304,11 @@ function createGUI(
 
     // Adjustable depths
     var min_depth = adjustable_values["Min Depth"] || 2.0;
-    var max_pd_d = adjustable_values["Max PD D "] || 3.0;
-    var max_pp_d = adjustable_values["Max PP D "] || 6.0;
+    var max_pd_d = adjustable_values["Max PD D "] || 6.0;
+    var max_pp_d = adjustable_values["Max PP D "] || 8.0;
     var min_width = adjustable_values["Min Width"] || 1.5;
     var max_pd_w = adjustable_values["Max PD W "] || 3.0;
-    var max_pp_w = 10.0; //adjustable_values["Max PP W"] || 6.0;
+    var max_pp_w = adjustable_values["Max PP W"] || 6.0;
     var min_height = adjustable_values["Min Height"] || 2.5;
     var max_pd_h = adjustable_values["Max PD H "] || 3.0;
     var max_pp_h = adjustable_values["Max PP H "] || 3.0;
@@ -424,7 +418,6 @@ function createGUI(
     // Increase Width of Side Block (Right)
     if (!adjustable_walls.left && adjustable_walls.right) {
         console.log("right only: Width Slider to Right");
-
         gui.add(cubeDimensions, "Width", min_width, max_pp_w + 0.5).onChange(
             (Width) => {
                 // get old area
@@ -456,6 +449,10 @@ function createGUI(
     }
     // Increase Height of Block
     if (adjustable_walls.up) {
+        var max_height = max_pd_h + 0.5;
+        if (name == "4L") {
+            max_height = max_pd_h + 0.1;
+        }
         gui.add(cubeDimensions, "Height", min_height, max_pd_h + 0.5).onChange(
             (Height) => {
                 // get old area
