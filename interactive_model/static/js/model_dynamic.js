@@ -180,6 +180,8 @@ function loadExtensions(scene, loader, house_width, house_depth) {
         if (name == "4" || name == "5") {
             short_name = "Rear";
             long_name = "Rear Extension";
+            adjustableCasesMessages[currentKey][name] =
+                "Possible under Permitted Development or Prior Approval";
         }
         if (name == "1L" || name == "7L") {
             short_name = "Hip to Gable";
