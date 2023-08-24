@@ -212,6 +212,8 @@ export default class CubeUpdater {
         min_height,
         max_pd_h,
         max_pp_h,
+        min_width,
+        min_depth,
         name,
         add_area
     ) {
@@ -219,6 +221,11 @@ export default class CubeUpdater {
         cube.geometry.dispose();
         if (cubeDimensions.Height > max_pd_h) {
             cubeDimensions.Height = max_pp_h;
+            if (name == "4" || name == "5") {
+                cubeDimensions.Depth = min_depth;
+            } else if (name == "3" || name == "19") {
+                cubeDimensions.Width = min_width;
+            }
         }
         // create new geometry
         let newGeometry = new THREE.BoxGeometry(

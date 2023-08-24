@@ -453,7 +453,8 @@ function createGUI(
         if (name == "4L") {
             max_height = max_pd_h + 0.1;
         }
-        gui.add(cubeDimensions, "Height", min_height, max_pd_h + 0.5).onChange(
+        console.log("up only: Height Slider");
+        gui.add(cubeDimensions, "Height", min_height, max_height).onChange(
             (Height) => {
                 // get old area
                 let oldArea = calculateBaseArea(cube);
@@ -465,6 +466,8 @@ function createGUI(
                     min_height,
                     max_pd_h,
                     max_pp_h,
+                    min_width,
+                    min_depth,
                     name,
                     add_area
                 );
