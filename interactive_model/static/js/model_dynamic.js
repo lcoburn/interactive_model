@@ -9,10 +9,8 @@ import CubeUpdater from "./cubeupdaternew.js";
 const localAuthorityValue = houseInfo.localAuthority;
 
 // Select the element by its ID
-const localAuthorityElement = document.getElementById("local_authority");
-
-// Set the content dynamically
-localAuthorityElement.textContent = localAuthorityValue;
+// const localAuthorityElement = document.getElementById("local_authority");
+// localAuthorityElement.textContent = localAuthorityValue;
 
 // Event Listener for button click
 document.addEventListener("DOMContentLoaded", (event) => {
