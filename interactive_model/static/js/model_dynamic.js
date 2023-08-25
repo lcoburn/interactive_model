@@ -641,7 +641,7 @@ function updateExtensionDimenions(long_name, count, cube, name) {
         // Create the HTML structure with the desired styles
         const content1 = `
 ${long_name}:
-<i>w:</i> ${width_box}m  <i>d:</i> ${depth_box}m  <i>h:</i> ${height_box}m<br>
+<i>w:</i> <strong>${width_box}m</strong>  <i>d:</i> <strong>${depth_box}m</strong>  <i>h:</i> <strong>${height_box}m</strong><br>
 Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
 `;
         const extension1Dims = document.querySelector(
@@ -658,7 +658,7 @@ Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br
     } else if (count == 2) {
         const content2 = `
         ${long_name}:
-        <i>w:</i> ${width_box}m  <i>d:</i> ${depth_box}m  <i>h:</i> ${height_box}m<br>
+        <i>w:</i> <strong>${width_box}m</strong>  <i>d:</i> <strong>${depth_box}m</strong>  <i>h:</i> <strong>${height_box}m</strong><br>
         Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
 `;
         const extension2Dims = document.querySelector(
@@ -674,8 +674,8 @@ Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br
     } else if (count == 3) {
         const content3 = `
         ${long_name}:
-        <i>w:</i> ${width_box}m  <i>d:</i> ${depth_box}m  <i>h:</i> ${height_box}m<br>
-        Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
+        <i>w:</i> <strong>${width_box}m</strong>  <i>d:</i> <strong>${depth_box}m</strong>  <i>h:</i> <strong>${height_box}m</strong><br>
+        Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}<strong><br><br>
 `;
         const extension3Dims = document.querySelector(
             ".extension-3-dimensions"
