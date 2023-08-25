@@ -87,9 +87,9 @@ export function loadModel() {
         0.1,
         2000
     );
-    camera.position.z = 25;
+    camera.position.z = 20;
     camera.position.x = 4;
-    camera.position.y = 15;
+    camera.position.y = 10;
     camera.lookAt(centreX - 3, centreY - 3, centreZ - 3);
     scene.add(camera);
 
