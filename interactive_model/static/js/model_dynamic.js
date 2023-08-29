@@ -114,6 +114,8 @@ export function loadModel() {
     controls.enableZoom = true;
     controls.autoRotate = false;
     controls.autoRotateSpeed = 5;
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = Math.PI / 2; // Restrict rotation to 90 degrees from the top (horizontal)
 
     // Resize
     window.addEventListener("resize", () => {
