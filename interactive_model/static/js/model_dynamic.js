@@ -37,8 +37,13 @@ export function loadModel() {
         housesGeometry.Left,
         housesGeometry.Right
     );
+    var index = 0;
     geometries.forEach((geometryTemp) => {
+        index += 1;
         const geometry = loader.createGeometry(geometryTemp);
+        if (index == 1) {
+            main_block = geometry;
+        }
         // Create a material
         const material = new THREE.MeshStandardMaterial({
             color: 0xffffff,
@@ -169,6 +174,7 @@ function loadExtensions(scene, loader, house_width, house_depth) {
         adjustable_walls =
             adjustableCases[currentKey].geometry[count].adjustable_walls;
         let name = adjustableCases[currentKey].case[count];
+
         let long_name = "";
         let short_name = "";
         if (name == "3" || name == "19") {
@@ -200,22 +206,69 @@ function loadExtensions(scene, loader, house_width, house_depth) {
 
         // Add the mesh to the scene
         scene.add(cube);
-        count += 1;
-        createGUI(
-            count,
-            cube,
-            adjustable_values,
-            adjustable_walls,
-            house_width,
-            house_depth,
-            name,
-            short_name,
-            long_name,
-            add_area,
-            bpsqm
+
+        // box3
+        var box3 = new THREE.Box3().setFromObject(cube);
+        var size = new THREE.Vector3();
+        box3.getSize(size);
+
+        // Dimensions
+        var width_box = size.x;
+        var height_box = size.y;
+        var depth_box = size.z;
+
+        // Vertices
+        var positions = cube.geometry.attributes.position;
+        console.log("name: ", name, "positions: ", positions);
+        console.log(cube.geometry.attributes.position.array);
+
+        // Create an object for the cube's dimensions
+        var cubeDimensions = {
+            Width: width_box,
+            Depth: depth_box,
+            Height: height_box,
+            color1: "#00ff00",
+            color2: "#ffa500",
+            color3: "#ff0000",
+            Position: positions,
+            H_Offset: 0.0,
+            V_Offset: 0,
+        };
+
+        // Get initial position
+        var initialPosition = new THREE.Vector3(
+            positions.getX(0),
+            positions.getY(0),
+            positions.getZ(0)
         );
+
+        CubeUpdater.initialCube(cube, cubeDimensions, initialPosition, name);
+        count += 1;
+        if (name != "1L" && name != "7L") {
+            console.log("name: ", name, name != "1L");
+            createGUI(
+                count,
+                cube,
+                adjustable_values,
+                adjustable_walls,
+                house_width,
+                house_depth,
+                name,
+                short_name,
+                long_name,
+                add_area,
+                bpsqm,
+                positions,
+                width_box,
+                depth_box,
+                height_box,
+                cubeDimensions,
+                initialPosition
+            );
+        }
         updateExtensionDimenions(long_name, count, cube, name);
     });
+
     updateAreaCostElements(add_area, bpsqm);
 }
 
@@ -230,7 +283,13 @@ function createGUI(
     short_name,
     long_name,
     add_area,
-    bpsqm
+    bpsqm,
+    positions,
+    width_box,
+    depth_box,
+    height_box,
+    cubeDimensions,
+    initialPosition
 ) {
     const elememt_id = "my-gui-container-".concat(count.toString());
     const gui_id = "gui-".concat(count.toString());
@@ -293,15 +352,6 @@ function createGUI(
     var customContainer = document.getElementById(elememt_id);
     customContainer.appendChild(gui.domElement);
 
-    var box3 = new THREE.Box3().setFromObject(cube);
-    var size = new THREE.Vector3();
-    box3.getSize(size);
-
-    // Dimensions
-    var width_box = size.x;
-    var height_box = size.y;
-    var depth_box = size.z;
-
     // Adjustable depths
     var min_depth = adjustable_values["Min Depth"] || 2.0;
     var max_pd_d = adjustable_values["Max PD D "] || 6.0;
@@ -313,8 +363,6 @@ function createGUI(
     var max_pd_h = adjustable_values["Max PD H "] || 3.0;
     var max_pp_h = adjustable_values["Max PP H "] || 3.0;
 
-    // Vertices
-    var positions = cube.geometry.attributes.position;
     var boundary = {
         ixl: positions.array[0],
         ixr: positions.array[0] - width_box,
@@ -322,28 +370,6 @@ function createGUI(
         iyt: positions.array[2] + depth_box,
         izh: positions.array[13],
     };
-
-    // Create an object for the cube's dimensions
-    var cubeDimensions = {
-        Width: width_box,
-        Depth: depth_box,
-        Height: height_box,
-        color1: "#00ff00",
-        color2: "#ffa500",
-        color3: "#ff0000",
-        Position: positions,
-        H_Offset: 0.0,
-        V_Offset: 0,
-    };
-
-    // Get initial position
-    var initialPosition = new THREE.Vector3(
-        positions.getX(0),
-        positions.getY(0),
-        positions.getZ(0)
-    );
-
-    CubeUpdater.initialCube(cube, cubeDimensions, initialPosition);
 
     // Add sliders to the GUI
     // Slider cases

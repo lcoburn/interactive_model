@@ -2,25 +2,44 @@ import * as THREE from "https://cdn.skypack.dev/three@0.129.0";
 
 export let message = "Permissable under Permitted Development";
 
+// load a texture
+const texLoader = new THREE.TextureLoader();
+// const texture = texLoader.load("../media/textures/brick-texture.png");
+
 // CubeUpdater.js
 export default class CubeUpdater {
-    static initialCube(cube, cubeDimensions, initialPosition) {
+    static initialCube(cube, cubeDimensions, initialPosition, name) {
+        const temp_geomety = cube.geometry;
         cube.geometry.dispose();
+        if (name != "1L" && name != "7L") {
+            // create new geometry
+            let newGeometry = new THREE.BoxGeometry(
+                cubeDimensions.Width,
+                cubeDimensions.Height,
+                cubeDimensions.Depth
+            ); // adjust width and height as per your requirements
+            cube.geometry = newGeometry;
+            cube.position.copy(initialPosition);
 
-        // create new geometry
-        let newGeometry = new THREE.BoxGeometry(
-            cubeDimensions.Width,
-            cubeDimensions.Height,
-            cubeDimensions.Depth
-        ); // adjust width and height as per your requirements
-        cube.geometry = newGeometry;
-        cube.position.copy(initialPosition);
+            // adjust cube's position so that front face stays at the same place
+            cube.position.z += cubeDimensions.Depth / 2.0;
+            cube.position.x -= cubeDimensions.Width / 2.0;
+            cube.position.y += cubeDimensions.Height / 2.0;
+            cube.material.color.set(cubeDimensions.color1);
+            console.log(cube.material);
+        } else {
+            const material = new THREE.MeshLambertMaterial({
+                color: cubeDimensions.color1, // or any color you prefer
+                transparent: false,
+                opacity: 1,
+                side: THREE.DoubleSide,
+            });
+            // cube = new THREE.Mesh(temp_geomety, material);
 
-        // adjust cube's position so that front face stays at the same place
-        cube.position.z += cubeDimensions.Depth / 2.0;
-        cube.position.x -= cubeDimensions.Width / 2.0;
-        cube.position.y += cubeDimensions.Height / 2.0;
-        cube.material.color.set(cubeDimensions.color1);
+            cube.material = material;
+            cube.geometry = temp_geomety;
+        }
+        // cube.material.map = texture;
     }
     static updateCubeDepth(
         cube,
@@ -76,6 +95,8 @@ export default class CubeUpdater {
         name,
         add_area
     ) {
+        console.log("******", sign);
+        console.log(initialPosition);
         var oldArea = this.calculateBaseArea(cube);
         cube.geometry.dispose();
         // create new geometry
@@ -91,8 +112,15 @@ export default class CubeUpdater {
 
         // adjust cube's position so that front face stays at the same place
         cube.position.z += cubeDimensions.Depth / 2.0;
-        cube.position.x += (sign * cubeDimensions.Width) / 2.0;
+        if (sign == -1) {
+            cube.position.x += (sign * cubeDimensions.Width) / 2.0;
+        } else {
+            cube.position.x = -3 + cubeDimensions.Width / 2.0;
+        }
+        // if (sign == 1) {cube.position.x -= cubeDimensions.Width;}
         cube.position.y += cubeDimensions.Height / 2.0;
+        console.log(cube.position);
+        console.log(cube.position.x - cubeDimensions.Width);
 
         // set color by checking rules
         adjustableCasesMessages[currentKey][name] =
@@ -334,9 +362,9 @@ export default class CubeUpdater {
         var siteCentre = this.getCentre(newPolygon);
         for (var i = 0; i < newPolygon[0].length; i++) {
             newPolygon[0][i] =
-                (newPolygon[0][i] - siteCentre[0]) * 1.03 + siteCentre[0];
+                (newPolygon[0][i] - siteCentre[0]) * 1.05 + siteCentre[0];
             newPolygon[1][i] =
-                (newPolygon[1][i] - siteCentre[1]) * 1.03 + siteCentre[1];
+                (newPolygon[1][i] - siteCentre[1]) * 1.05 + siteCentre[1];
         }
 
         // Assuming the cube's position is its center and it's aligned with the coordinate axes
