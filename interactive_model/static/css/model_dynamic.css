@@ -186,7 +186,7 @@ html {
     padding: 2px; /* Remove padding if any */
     margin: 0; /* Remove margins to avoid space between boxes */
     margin-left: 1rem;
-    width: 799px;
+    /* width: 799px; */
     /* box-shadow: 0 0 10px rgba(46, 161, 213, 1); */
 }
 .side-box {
