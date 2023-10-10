@@ -93,6 +93,8 @@
                 for (let j = 0; j < length; j++) {
                     adjustableCasesMessages[keys[i]][exts[j]] = "";
                 }
+                adjustableCasesMessages[keys[i]]["case_comment"] =
+                    adjustableCases[keys[i]]["case_comment"];
             }
             console.log("adjustableCasesMessages", adjustableCasesMessages);
             var houseDataStr = "{{ house_data|safe }}";

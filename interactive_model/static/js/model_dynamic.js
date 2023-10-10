@@ -667,11 +667,16 @@ function updateExtensionDimenions(long_name, count, cube, name) {
     // Example usage - replace with your own content
     if (count == 1) {
         // Create the HTML structure with the desired styles
-        const content1 = `
+        let content1 = `
 ${long_name}:
 <i>w:</i> <strong>${width_box}m</strong>  <i>d:</i> <strong>${depth_box}m</strong>  <i>h:</i> <strong>${height_box}m</strong><br>
 Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
 `;
+        const comment = adjustableCasesMessages[currentKey]["case_comment"];
+        if (comment) {
+            content1 += `Comment: <i>${comment}</i><br>`;
+        }
+
         const extension1Dims = document.querySelector(
             ".extension-1-dimensions"
         );
@@ -684,11 +689,15 @@ Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br
             extension1Dims.style.color = text_color; // changing text color to blue
         }
     } else if (count == 2) {
-        const content2 = `
+        let content2 = `
         ${long_name}:
         <i>w:</i> <strong>${width_box}m</strong>  <i>d:</i> <strong>${depth_box}m</strong>  <i>h:</i> <strong>${height_box}m</strong><br>
         Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br><br>
 `;
+        const comment = adjustableCasesMessages[currentKey]["case_comment"];
+        if (comment) {
+            content2 += `Comment: <i>${comment}</i><br>`;
+        }
         const extension2Dims = document.querySelector(
             ".extension-2-dimensions"
         );
@@ -700,11 +709,16 @@ Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br
             extension2Dims.style.color = text_color; // changing text color to blue
         }
     } else if (count == 3) {
-        const content3 = `
+        let content3 = `
         ${long_name}:
         <i>w:</i> <strong>${width_box}m</strong>  <i>d:</i> <strong>${depth_box}m</strong>  <i>h:</i> <strong>${height_box}m</strong><br>
         Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}<strong><br><br>
 `;
+
+        const comment = adjustableCasesMessages[currentKey]["case_comment"];
+        if (comment) {
+            content3 += `Comment: <i>${comment}</i><br>`;
+        }
         const extension3Dims = document.querySelector(
             ".extension-3-dimensions"
         );
@@ -718,6 +732,7 @@ Planning Notes: <strong>${adjustableCasesMessages[currentKey][name]}</strong><br
         }
     }
 }
+
 function clearExtensionDimensions() {
     const extension1Dims = document.querySelector(".extension-1-dimensions");
     const extension2Dims = document.querySelector(".extension-2-dimensions");
